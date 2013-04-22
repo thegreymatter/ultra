@@ -1,19 +1,11 @@
-ultra
-=====
-JMeter load testing and analysis utility
-
-committers:
-============
-gillyb - https://github.com/gillyb
-rabashani - https://github.com/rabashani
-
-
-
 ULTRA - Your Tool for Load Testing
 ================================
 
+JMeter load testing and analysis utility
+
+
 Components
----------------------------------------
+-------------
 * site - 
 * util-runner - 
 * scheduler -
