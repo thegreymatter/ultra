@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultra.UI", "Ultra.UI\Ultra.UI.csproj", "{2C95C756-AA3B-48AA-952D-01349217D90D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultra.Config", "Ultra.Config\Ultra.Config.csproj", "{9AAC1BB7-778A-487D-A3E2-DA15763995B2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultra.Dal", "Ultra.Dal\Ultra.Dal.csproj", "{C66C137A-1D3B-4012-9989-72F703CDCE1F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2C95C756-AA3B-48AA-952D-01349217D90D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C95C756-AA3B-48AA-952D-01349217D90D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C95C756-AA3B-48AA-952D-01349217D90D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C95C756-AA3B-48AA-952D-01349217D90D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9AAC1BB7-778A-487D-A3E2-DA15763995B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9AAC1BB7-778A-487D-A3E2-DA15763995B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9AAC1BB7-778A-487D-A3E2-DA15763995B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9AAC1BB7-778A-487D-A3E2-DA15763995B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C66C137A-1D3B-4012-9989-72F703CDCE1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C66C137A-1D3B-4012-9989-72F703CDCE1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C66C137A-1D3B-4012-9989-72F703CDCE1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C66C137A-1D3B-4012-9989-72F703CDCE1F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

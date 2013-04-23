@@ -1,0 +1,15 @@
+C:\Dev\ultra\src\Ultra.Dal\bin\Debug\Ultra.Dal.dll
+C:\Dev\ultra\src\Ultra.Dal\bin\Debug\Ultra.Dal.pdb
+C:\Dev\ultra\src\Ultra.Dal\bin\Debug\FluentNHibernate.dll
+C:\Dev\ultra\src\Ultra.Dal\bin\Debug\Iesi.Collections.dll
+C:\Dev\ultra\src\Ultra.Dal\bin\Debug\MongoDB.Bson.dll
+C:\Dev\ultra\src\Ultra.Dal\bin\Debug\MongoDB.Driver.dll
+C:\Dev\ultra\src\Ultra.Dal\bin\Debug\NHibernate.dll
+C:\Dev\ultra\src\Ultra.Dal\bin\Debug\FluentNHibernate.xml
+C:\Dev\ultra\src\Ultra.Dal\bin\Debug\Iesi.Collections.xml
+C:\Dev\ultra\src\Ultra.Dal\bin\Debug\MongoDB.Bson.xml
+C:\Dev\ultra\src\Ultra.Dal\bin\Debug\MongoDB.Driver.xml
+C:\Dev\ultra\src\Ultra.Dal\bin\Debug\NHibernate.xml
+C:\Dev\ultra\src\Ultra.Dal\obj\Debug\Ultra.Dal.csprojResolveAssemblyReference.cache
+C:\Dev\ultra\src\Ultra.Dal\obj\Debug\Ultra.Dal.dll
+C:\Dev\ultra\src\Ultra.Dal\obj\Debug\Ultra.Dal.pdb
