@@ -1,0 +1,34 @@
+#
+#  A small reminder - gitignore only ignores "new" files. It has no
+#  affect on files that are already tracked (already in the repository).
+#
+
+
+#############################################################
+#             Visual Studio Auto Generated Files
+#############################################################
+*.suo
+*.sln.cache
+*.csproj.user
+src/**/bin/
+src/**/obj/
+out/
+bin/
+obj/
+src/Ohio.sln.SolutionBuild*.*
+
+#############################################################
+#             ReSharper Auto Generated Files
+#############################################################
+src/_[Rr]e[Ss]harper*
+src/**/_ReSharper.*
+*.[Rr]e[Ss]harper.user
+src/Ohio.*.ReSharper
+*.DotSettings.user
+
+#############################################################
+#                  Miscellaneous
+#############################################################
+.gitignore.backup
+*.orig
+[Tt]humbs.db
