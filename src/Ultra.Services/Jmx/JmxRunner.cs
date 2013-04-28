@@ -50,7 +50,9 @@ namespace Ultra.Services.Jmx
 			};
 
 			process.Exited += LoadRunFinished;
+			process.EnableRaisingEvents = true;
 			process.Start();
+			process.WaitForExit();
 		}
 
 		private void LoadRunFinished(object sender, EventArgs eventArgs)
