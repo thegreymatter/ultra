@@ -1,26 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Http;
+﻿using System.Reflection;
 using System.Web.Mvc;
-using System.Web.Optimization;
 using System.Web.Routing;
 using Castle.MicroKernel.Registration;
 using Castle.Windsor;
+using Castle.Windsor.Installer;
 using NHibernate;
+using Ultra.Config;
 using Ultra.Config.Routes;
 using Ultra.Controllers;
 using Ultra.Controllers.Plumbing;
 using Ultra.Dal.Entities;
 using Ultra.Dal.Plumbing;
-using Ultra.Services.JmxFile;
+using Ultra.Services.Jmx;
 
 namespace Ultra
 {
 	public class MvcApplication : System.Web.HttpApplication
 	{
 		private IWindsorContainer _container;
+		private Bootstrapper _bootstrapper;
+
+		public static Assembly[] Assemblies = new[] {
+			typeof (HomeController).Assembly,	// Ultra.UI
+			typeof (JmxRunner).Assembly,		// Ultra.Services
+			typeof (EntityBase).Assembly		// Ultra.Dal
+		};
 
 		public static void RegisterGlobalFilters(GlobalFilterCollection filters)
 		{
@@ -36,8 +40,6 @@ namespace Ultra
 
 		protected void Application_Start()
 		{
-			AreaRegistration.RegisterAllAreas();
-
 			RegisterGlobalFilters(GlobalFilters.Filters);
 			RegisterRoutes(RouteTable.Routes);
 
@@ -52,29 +54,14 @@ namespace Ultra
 
 		private void BootstrapContainer()
 		{
-			_container = new WindsorContainer();
+			_container = new WindsorContainer().Install(FromAssembly.This());
 			var controllerFactory = new WindsorControllerFactory(_container.Kernel);
 			ControllerBuilder.Current.SetControllerFactory(controllerFactory);
 
 			// do registrations
 			
-			// TODO: make registration of components convention based
-
-			_container.Register(AllTypes.FromThisAssembly()
-				.BasedOn<IController>()
-				.If(Component.IsInSameNamespaceAs<HomeController>())
-				.If(t => t.Name.EndsWith("Controller"))
-				.Configure(t => t.LifestyleTransient()));
-			
-			_container.Register(
-				Component.For(typeof(IStorage<>))
-				.ImplementedBy(typeof(Storage<>))
-				.LifestyleSingleton());
-
-			_container.Register(
-				Component.For<IMongoProvider>()
-				.ImplementedBy<MongoProvider>()
-				.LifestyleSingleton());
+			_bootstrapper = new Bootstrapper(_container);
+			_bootstrapper.RegisterServices(Assemblies);
 
 			// RegisterDbSessionFactory();
 		}

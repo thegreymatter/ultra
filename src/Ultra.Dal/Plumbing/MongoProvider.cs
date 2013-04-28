@@ -37,6 +37,7 @@ namespace Ultra.Dal.Plumbing
 		public MongoProvider()
 		{
 			_connection = new MongoConnectionStringBuilder(ConnectionString);
+			_client = new MongoClient();
 		}
 	}
 }

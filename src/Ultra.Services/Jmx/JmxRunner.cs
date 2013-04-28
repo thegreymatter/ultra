@@ -2,30 +2,37 @@
 using System.Configuration;
 using System.Diagnostics;
 using System.IO;
+using MongoDB.Bson;
 using Ultra.Config.ExtensionMethods;
 using Ultra.Dal.Entities;
 using Ultra.Dal.Plumbing;
 
 namespace Ultra.Services.Jmx
 {
-	public class JmxRunner
+	public interface IJmxRunner
+	{
+		void Run(string filename, JmxSettings settings);
+	}
+
+	public class JmxRunner : IJmxRunner
 	{
 		private string _runTime;
+		private ObjectId _loadRunId;
 
 		public static string JmxFileArchive = ConfigurationManager.AppSettings["JmxFileArchive"];
 		public static string JMeterBatFile = ConfigurationManager.AppSettings["JMeterBatFile"];
 
 		private readonly IStorage<LoadRun> _storage;
 
-		public JmxRunner(/*IStorage<LoadRun> storage*/)
+		public JmxRunner(IStorage<LoadRun> storage)
 		{
-			//_storage = storage;
+			_storage = storage;
 		}
 
 		public void Run(string filename, JmxSettings settings)
 		{
 			var newJmxFilename = ArchiveJmxFile(filename);
-			//PersistRunSettings(newJmxFilename, settings);
+			PersistRunSettings(newJmxFilename, settings);
 			RunScript(newJmxFilename, settings);
 			//SaveScriptOutput();
 		}
@@ -42,12 +49,23 @@ namespace Ultra.Services.Jmx
 				Arguments = arguments
 			};
 
+			process.Exited += LoadRunFinished;
 			process.Start();
+		}
+
+		private void LoadRunFinished(object sender, EventArgs eventArgs)
+		{
+			var loadRun = _storage.GetById(_loadRunId);
+			loadRun.EndTime = DateTime.Now;
+			_storage.SaveOrUpdate(loadRun);
 		}
 
 		private void PersistRunSettings(string filename, JmxSettings settings)
 		{
+			_loadRunId = ObjectId.GenerateNewId();
 			_storage.SaveOrUpdate(new LoadRun {
+				Id = _loadRunId,
+				StartTime = DateTime.Now,
 				JmxFilename = filename,
 				Domain = settings.Domain,
 				Duration = settings.Duration,
