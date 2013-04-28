@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultra.Config", "Ultra.Confi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultra.Dal", "Ultra.Dal\Ultra.Dal.csproj", "{C66C137A-1D3B-4012-9989-72F703CDCE1F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultra.Services", "Ultra.Services\Ultra.Services.csproj", "{FC17C151-CF25-4BA4-B641-DBE03E420555}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +27,10 @@ Global
 		{C66C137A-1D3B-4012-9989-72F703CDCE1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C66C137A-1D3B-4012-9989-72F703CDCE1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C66C137A-1D3B-4012-9989-72F703CDCE1F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC17C151-CF25-4BA4-B641-DBE03E420555}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC17C151-CF25-4BA4-B641-DBE03E420555}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC17C151-CF25-4BA4-B641-DBE03E420555}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC17C151-CF25-4BA4-B641-DBE03E420555}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

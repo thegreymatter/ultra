@@ -12,7 +12,9 @@ using NHibernate;
 using Ultra.Config.Routes;
 using Ultra.Controllers;
 using Ultra.Controllers.Plumbing;
+using Ultra.Dal.Entities;
 using Ultra.Dal.Plumbing;
+using Ultra.Services.JmxFile;
 
 namespace Ultra
 {
@@ -63,10 +65,10 @@ namespace Ultra
 				.If(Component.IsInSameNamespaceAs<HomeController>())
 				.If(t => t.Name.EndsWith("Controller"))
 				.Configure(t => t.LifestyleTransient()));
-
+			
 			_container.Register(
-				Component.For(typeof (IStorage<>))
-				.ImplementedBy(typeof (Storage<>))
+				Component.For(typeof(IStorage<>))
+				.ImplementedBy(typeof(Storage<>))
 				.LifestyleSingleton());
 
 			_container.Register(

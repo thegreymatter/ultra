@@ -209,6 +209,9 @@
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="jmx\RealWorld.jmx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.8.2.js" />
     <Content Include="Scripts\jquery-1.8.2.min.js" />
@@ -257,6 +260,10 @@
     <ProjectReference Include="..\Ultra.Dal\Ultra.Dal.csproj">
       <Project>{C66C137A-1D3B-4012-9989-72F703CDCE1F}</Project>
       <Name>Ultra.Dal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Ultra.Services\Ultra.Services.csproj">
+      <Project>{FC17C151-CF25-4BA4-B641-DBE03E420555}</Project>
+      <Name>Ultra.Services</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

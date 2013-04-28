@@ -6,22 +6,25 @@ using System.Web.Mvc;
 using Ultra.Config.Routes;
 using Ultra.Dal.Entities;
 using Ultra.Dal.Plumbing;
+using Ultra.Services.Jmx;
 
 namespace Ultra.Controllers
 {
 	public class HomeController : Controller
 	{
-		private readonly IStorage<TestEntity> _testStorage;
-
-		public HomeController(IStorage<TestEntity> testStorage)
+		public HomeController()
 		{
-			_testStorage = testStorage;
 		}
 
 		[Route("")]
 		public ActionResult Index()
 		{
 			ViewBag.Message = "Modify this template to jump-start your ASP.NET MVC application.";
+
+			var runner = new JmxRunner();
+			runner.Run("C:\\utils\\apache-jmeter-2.9\\RealWorld.jmx", new JmxSettings {
+				Domain = "uat.shopyourway.com", Duration = 1800, RampUp = 150
+			});
 
 			return View();
 		}

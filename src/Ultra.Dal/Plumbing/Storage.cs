@@ -45,7 +45,7 @@ namespace Ultra.Dal.Plumbing
 			var persistenceAttributes = typeof (T).GetCustomAttributes(typeof (PersistenceAttribute), true) as PersistenceAttribute[];
 
 			if (persistenceAttributes != null)
-				collectionName = persistenceAttributes.First().TableName;
+				collectionName = persistenceAttributes.First().CollectionName;
 			else
 				collectionName = typeof (T).Name.ToLower();
 
