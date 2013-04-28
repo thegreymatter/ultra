@@ -31,3 +31,5 @@ src/Ohio.*.ReSharper
 .gitignore.backup
 *.orig
 [Tt]humbs.db
+
+*.jmx
