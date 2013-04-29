@@ -2,6 +2,7 @@
 using System.Configuration;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using MongoDB.Bson;
 using Ultra.Config.ExtensionMethods;
 using Ultra.Dal.Entities;
@@ -47,6 +48,23 @@ namespace Ultra.Services.Jmx
 			RunScript(newJmxFilename, settings);
 
 			var runResults = _jmeterOutputAnalyzer.Analyze(_outputFile, settings);
+			PersistRunResults(runResults);
+		}
+
+		private void PersistRunResults(RunResults runResults)
+		{
+			var loadRun = _storage.GetById(_loadRunId);
+			loadRun.PageMetrics = runResults.Threads.Select(x => new PageMetric {
+				AverageResponseTime = x.GetAvgResponseTime(),
+				ErrorRate = x.GetErrorPercent(),
+				IsAjax = x.IsAjax,
+				PageName = x.GetThreadPoolName(),
+				PercentOverThreshold = x.GetPercentAboveThreshold(),
+				Percentile90 = x.GetPercentileX(90),
+				RequestCount = x.GetRequestCount()
+			}).ToArray();
+			loadRun.TotalPvs = runResults.PVS;
+			_storage.SaveOrUpdate(loadRun);
 		}
 
 		private void RunScript(string newJmxFilename, JmxSettings settings)
