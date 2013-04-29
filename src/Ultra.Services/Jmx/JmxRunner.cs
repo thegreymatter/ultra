@@ -13,7 +13,8 @@ namespace Ultra.Services.Jmx
 {
 	public interface IJmxRunner
 	{
-		void Run(string filename, JmxSettings settings);
+		void Run(string filename, JmxSettings settings, bool waitForFinish = true);
+		void PersistRunResults(RunResults runResults);
 	}
 
 	public class JmxRunner : IJmxRunner
@@ -37,7 +38,7 @@ namespace Ultra.Services.Jmx
 
 		public Action<object, EventArgs> LoadRunFinished { get; set; }
 
-		public void Run(string filename, JmxSettings settings)
+		public void Run(string filename, JmxSettings settings, bool waitForFinish = true)
 		{
 			_runTime = DateTime.Now.ToUnixTime().ToString();
 			_loadRunId = ObjectId.GenerateNewId();
@@ -45,13 +46,13 @@ namespace Ultra.Services.Jmx
 
 			var newJmxFilename = ArchiveJmxFile(filename);
 			PersistRunSettings(newJmxFilename, settings);
-			RunScript(newJmxFilename, settings);
+			RunScript(newJmxFilename, settings, waitForFinish);
 
 			var runResults = _jmeterOutputAnalyzer.Analyze(_outputFile, settings);
 			PersistRunResults(runResults);
 		}
 
-		private void PersistRunResults(RunResults runResults)
+		public void PersistRunResults(RunResults runResults)
 		{
 			var loadRun = _storage.GetById(_loadRunId);
 			loadRun.PageMetrics = runResults.Threads.Select(x => new PageMetric {
@@ -67,7 +68,7 @@ namespace Ultra.Services.Jmx
 			_storage.SaveOrUpdate(loadRun);
 		}
 
-		private void RunScript(string newJmxFilename, JmxSettings settings)
+		private void RunScript(string newJmxFilename, JmxSettings settings, bool waitForFinish)
 		{
 			var process = new Process();
 
@@ -80,7 +81,8 @@ namespace Ultra.Services.Jmx
 			};
 
 			process.EnableRaisingEvents = true;
-			process.Exited += SaveOutputScriptAndUpdateRun;
+			if (waitForFinish)
+				process.Exited += SaveOutputScriptAndUpdateRun;
 
 			process.Start();
 			process.WaitForExit();
