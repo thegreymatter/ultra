@@ -19,9 +19,9 @@ Requirements :
 * JMeter
 
 Steps :
-1. Install mongodb and start the mongo service. To make sure your mongodb server is working, go to http://<mongo_server>:28017 and you will see the mongodb dashboard.
-2. Open the web.config file in the Ultra.UI library and configure the appSettings variables to fit your machine.
-3. Run the utility - Ultra.Util.exe with required parameters.
+* Install mongodb and start the mongo service. To make sure your mongodb server is working, go to http://<mongo_server>:28017 and you will see the mongodb dashboard.
+* Open the web.config file in the Ultra.UI library and configure the appSettings variables to fit your machine.
+* Run the utility - Ultra.Util.exe with required parameters.
 
 Committers
 ----------
