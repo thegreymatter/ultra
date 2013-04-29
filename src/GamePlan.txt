@@ -1,0 +1,19 @@
+GamePlan
+========
+
+Utility
+ - Option to analyze output without running the script
+ - Add automatic mapper for results file
+ - ignore results before the full ramp up time
+ - add notes for each run
+ - parameter for total thread count or throughput
+	- find out how to split this among the different thread groups
+
+History Graph UI
+ - Display graph of successful runs
+ - Color stats in graph by predefined thresholds
+ - option to delete a run from the graph
+
+WebUI
+ - Option to upload a jmx script
+ - display the thread groups in the script
