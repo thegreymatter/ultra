@@ -17,6 +17,7 @@ Requirements :
 * Visual Studio 2012 (.net4 & mvc4)
 * mongodb
 * JMeter
+
 Steps :
 1. Install mongodb and start the mongo service. To make sure your mongodb server is working, go to http://<mongo_server>:28017 and you will see the mongodb dashboard.
 2. Open the web.config file in the Ultra.UI library and configure the appSettings variables to fit your machine.
