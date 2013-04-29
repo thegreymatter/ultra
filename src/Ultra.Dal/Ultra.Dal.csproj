@@ -61,7 +61,7 @@
     <Compile Include="Plumbing\MongoProvider.cs" />
     <Compile Include="Plumbing\PersistenceFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Entities\TestEntity.cs" />
+    <Compile Include="Entities\LoadRun.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
