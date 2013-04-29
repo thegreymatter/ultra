@@ -93,6 +93,7 @@ namespace Ultra.Services.Jmx
 
 			var loadRun = _storage.GetById(_loadRunId);
 			loadRun.EndTime = DateTime.Now;
+			loadRun.RunOutputFilename = outputFilename;
 			_storage.SaveOrUpdate(loadRun);
 		}
 
