@@ -6,6 +6,7 @@ using MongoDB.Bson;
 using Ultra.Config.ExtensionMethods;
 using Ultra.Dal.Entities;
 using Ultra.Dal.Plumbing;
+using Ultra.Services.JMeterOutput;
 
 namespace Ultra.Services.Jmx
 {
@@ -18,23 +19,34 @@ namespace Ultra.Services.Jmx
 	{
 		private string _runTime;
 		private ObjectId _loadRunId;
+		private string _outputFile;
 
 		public static string JmxFileArchive = ConfigurationManager.AppSettings["JmxFileArchive"];
 		public static string JMeterBatFile = ConfigurationManager.AppSettings["JMeterBatFile"];
+		public static string OutputArchive = ConfigurationManager.AppSettings["OutputArchive"];
 
 		private readonly IStorage<LoadRun> _storage;
+		private readonly IJMeterOutputAnalyzer _jmeterOutputAnalyzer;
 
-		public JmxRunner(IStorage<LoadRun> storage)
+		public JmxRunner(IStorage<LoadRun> storage, IJMeterOutputAnalyzer jmeterOutputAnalyzer)
 		{
 			_storage = storage;
+			_jmeterOutputAnalyzer = jmeterOutputAnalyzer;
 		}
+
+		public Action<object, EventArgs> LoadRunFinished { get; set; }
 
 		public void Run(string filename, JmxSettings settings)
 		{
+			_runTime = DateTime.Now.ToUnixTime().ToString();
+			_loadRunId = ObjectId.GenerateNewId();
+			_outputFile = Path.Combine(OutputArchive, _runTime + ".csv");
+
 			var newJmxFilename = ArchiveJmxFile(filename);
 			PersistRunSettings(newJmxFilename, settings);
 			RunScript(newJmxFilename, settings);
-			//SaveScriptOutput();
+
+			var runResults = _jmeterOutputAnalyzer.Analyze(_outputFile, settings);
 		}
 
 		private void RunScript(string newJmxFilename, JmxSettings settings)
@@ -49,14 +61,18 @@ namespace Ultra.Services.Jmx
 				Arguments = arguments
 			};
 
-			process.Exited += LoadRunFinished;
 			process.EnableRaisingEvents = true;
+			process.Exited += SaveOutputScriptAndUpdateRun;
+
 			process.Start();
 			process.WaitForExit();
 		}
 
-		private void LoadRunFinished(object sender, EventArgs eventArgs)
+		private void SaveOutputScriptAndUpdateRun(object sender, EventArgs eventArgs)
 		{
+			var outputFilename = _runTime + ".csv";
+			File.Move(outputFilename, _outputFile);
+
 			var loadRun = _storage.GetById(_loadRunId);
 			loadRun.EndTime = DateTime.Now;
 			_storage.SaveOrUpdate(loadRun);
@@ -64,7 +80,6 @@ namespace Ultra.Services.Jmx
 
 		private void PersistRunSettings(string filename, JmxSettings settings)
 		{
-			_loadRunId = ObjectId.GenerateNewId();
 			_storage.SaveOrUpdate(new LoadRun {
 				Id = _loadRunId,
 				StartTime = DateTime.Now,
@@ -77,7 +92,6 @@ namespace Ultra.Services.Jmx
 
 		private string ArchiveJmxFile(string filename)
 		{
-			_runTime = DateTime.Now.ToUnixTime().ToString();
 			var newFilename = Path.Combine(JmxFileArchive, _runTime + ".jmx");
 			File.Copy(filename, newFilename);
 			return newFilename;
