@@ -1,7 +1,5 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Driver;
-using MongoDB.Driver.Builders;
-using MongoDB.Driver.Linq;
 using System.Linq;
 using Ultra.Dal.Entities;
 
@@ -11,7 +9,8 @@ namespace Ultra.Dal.Plumbing
 	{
 		T GetById(ObjectId id);
 		void SaveOrUpdate(T entity);
-		IQueryable<T> RunQuery(IMongoQuery query);
+		MongoCursor<T> RunQuery(IMongoQuery query);
+		MongoCursor<T> RunQueryOnAll();
 	}
 
 	public class Storage<T> : IStorage<T> where T : EntityBase
@@ -33,9 +32,14 @@ namespace Ultra.Dal.Plumbing
 			GetCollection().Save(entity);
 		}
 
-		public IQueryable<T> RunQuery(IMongoQuery query)
+		public MongoCursor<T> RunQuery(IMongoQuery query)
 		{
-			return GetCollection().Find(query).AsQueryable();
+			return GetCollection().Find(query);
+		}
+
+		public MongoCursor<T> RunQueryOnAll()
+		{
+			return GetCollection().FindAll();
 		}
 
 		private MongoCollection<T> GetCollection()

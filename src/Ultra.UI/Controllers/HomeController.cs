@@ -3,36 +3,32 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using MongoDB.Driver.Builders;
 using Ultra.Config.Routes;
 using Ultra.Controllers.Plumbing;
 using Ultra.Dal.Entities;
 using Ultra.Dal.Plumbing;
+using Ultra.Dal.Repositories;
+using Ultra.Services.JMeterOutput;
 using Ultra.Services.Jmx;
 
 namespace Ultra.Controllers
 {
 	public class HomeController : Controller
 	{
-		private readonly IJmxRunner _jmxRunner;
+		private readonly ILoadRunRepository _loadRunRepository;
 
-		public HomeController(IJmxRunner jmxRunner)
+		public HomeController(ILoadRunRepository loadRunRepository)
 		{
-			_jmxRunner = jmxRunner;
+			_loadRunRepository = loadRunRepository;
 		}
 
 		[Route("")]
 		public ActionResult Index()
 		{
-			ViewBag.Message = "Modify this template to jump-start your ASP.NET MVC application.";
+			var loadRuns = _loadRunRepository.GetMostRecentLoadRuns(10);
 
-			_jmxRunner.Run("C:\\utils\\apache-jmeter-2.9\\RealWorld.jmx", new JmxSettings
-			{
-				Domain = "uat.shopyourway.com",
-				Duration = 60,
-				RampUp = 150
-			});
-
-			return Content("Gilly The King");
+			return View(loadRuns);
 		}
 	}
 }
