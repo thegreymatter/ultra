@@ -1,0 +1,4 @@
+﻿.container { width: 600px; }
+
+#load-runs-history { border: solid 1px #ccc;border-collapse: collapse;margin: 2px 0;width: 100%; }
+#load-runs-history td { border: solid 1px #ccc; }

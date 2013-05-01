@@ -163,6 +163,7 @@
     <Content Include="jmx\RealWorld.jmx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="static\css\runs-history.css" />
     <Content Include="static\css\main.css" />
     <Content Include="static\css\reset.css" />
     <Content Include="Web.config">
