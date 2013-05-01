@@ -1,4 +1,5 @@
 ﻿.container { width: 600px; }
 
 #load-runs-history { border: solid 1px #ccc;border-collapse: collapse;margin: 2px 0;width: 100%; }
-#load-runs-history td { border: solid 1px #ccc; }
+#load-runs-history th { border: solid 1px #ccc;padding: 0 3px; }
+#load-runs-history td { border: solid 1px #ccc;padding: 0 3px; }
