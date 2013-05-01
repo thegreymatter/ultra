@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 
-namespace Ultra.Util
+namespace Ultra.Util.ArgumentParser
 {
 	public class ArgumentParser
 	{
@@ -19,7 +18,9 @@ namespace Ultra.Util
 				{
 					if (_validKeyValues.Any(x => x.Equals(args[i], StringComparison.OrdinalIgnoreCase)))
 					{
-						// TODO: make sure the next value is not a flag and exists in the array - throw proper exception
+						if (args.Length == i + 1 || !args[i+1].StartsWith("--"))
+							throw new ArgumentParsingException();
+
 						arguments.KeyValues.Add(args[i].Substring(2).ToLower(), args[i + 1]);
 						continue;
 					}
@@ -30,23 +31,11 @@ namespace Ultra.Util
 						continue;
 					}
 
-					// TODO: we don't recognize this parameter, throw proper exception
+					throw new ArgumentParsingException();
 				}
 			}
 
 			return arguments;
-		}
-	}
-
-	public class UtilArguments
-	{
-		public Dictionary<string, string> KeyValues { get; set; };
-		public List<string> Flags { get; set; }
-
-		public UtilArguments()
-		{
-			KeyValues = new Dictionary<string, string>();
-			Flags = new List<string>();
 		}
 	}
 }
