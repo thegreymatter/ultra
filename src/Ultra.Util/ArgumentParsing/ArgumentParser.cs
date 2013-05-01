@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace Ultra.Util.ArgumentParser
+namespace Ultra.Util.ArgumentParsing
 {
 	public class ArgumentParser
 	{

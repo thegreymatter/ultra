@@ -45,9 +45,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ArgumentParser\ArgumentParser.cs" />
-    <Compile Include="ArgumentParser\ArgumentParsingException.cs" />
-    <Compile Include="ArgumentParser\UtilArguments.cs" />
+    <Compile Include="ArgumentParsing\ArgumentParser.cs" />
+    <Compile Include="ArgumentParsing\ArgumentParsingException.cs" />
+    <Compile Include="ArgumentParsing\UtilArguments.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

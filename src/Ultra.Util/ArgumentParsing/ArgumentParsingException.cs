@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Ultra.Util.ArgumentParser
+namespace Ultra.Util.ArgumentParsing
 {
 	public class ArgumentParsingException : Exception
 	{

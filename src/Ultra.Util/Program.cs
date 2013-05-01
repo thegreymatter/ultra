@@ -1,6 +1,7 @@
 ﻿using Castle.Windsor;
 using Ultra.Config;
 using Ultra.Services.Jmx;
+using Ultra.Util.ArgumentParsing;
 
 namespace Ultra.Util
 {
@@ -15,32 +16,17 @@ namespace Ultra.Util
 
 			var runner = _container.Resolve<IJmxRunner>();
 
-			var settings = ParseArguments(args);
-			runner.Run(_jmxFilename, settings);
-		}
+			var parser = new ArgumentParser();
+			var parsedArguments = parser.ParseArguments(args);
 
-		private static JmxSettings ParseArguments(string[] args)
-		{
-			var settings = new JmxSettings();
-			for (var i = 0; i < args.Length; i++)
-			{
-				switch (args[i])
-				{
-					case "--filename":
-						_jmxFilename = args[i + 1];
-						break;
-					case "--duration":
-						settings.Duration = int.Parse(args[i + 1]);
-						break;
-					case "--rampup":
-						settings.RampUp = int.Parse(args[i + 1]);
-						break;
-					case "--domain":
-						settings.Domain = args[i + 1];
-						break;
-				}
-			}
-			return settings;
+			_jmxFilename = parsedArguments.KeyValues["filename"];
+			var jmxSettings = new JmxSettings {
+				Domain = parsedArguments.KeyValues["domain"],
+				Duration = int.Parse(parsedArguments.KeyValues["duration"]),
+				RampUp = int.Parse(parsedArguments.KeyValues["rampup"])
+			};
+
+			runner.Run(_jmxFilename, jmxSettings);
 		}
 
 		private static void Bootstrap()
