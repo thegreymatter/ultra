@@ -14,7 +14,7 @@ namespace Ultra.Services.Jmx
 	public interface IJmxRunner
 	{
 		void Run(string filename, JmxSettings settings, bool waitForFinish = true);
-		void PersistRunResults(RunResults runResults);
+		void PersistRunResults(RunResults runResults, bool onlyAnalysis = false);
 	}
 
 	public class JmxRunner : IJmxRunner
@@ -52,9 +52,10 @@ namespace Ultra.Services.Jmx
 			PersistRunResults(runResults);
 		}
 
-		public void PersistRunResults(RunResults runResults)
+		public void PersistRunResults(RunResults runResults, bool onlyAnalysis = false)
 		{
-			var loadRun = _storage.GetById(_loadRunId);
+			var loadRun = !onlyAnalysis ? _storage.GetById(_loadRunId) : new LoadRun();
+
 			loadRun.PageMetrics = runResults.Threads.Select(x => new PageMetric {
 				AverageResponseTime = x.GetAvgResponseTime(),
 				ErrorRate = x.GetErrorPercent(),

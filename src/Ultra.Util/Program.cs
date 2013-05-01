@@ -1,4 +1,5 @@
-﻿using Castle.Windsor;
+﻿using System;
+using Castle.Windsor;
 using Ultra.Config;
 using Ultra.Services.JMeterOutput;
 using Ultra.Services.Jmx;
@@ -31,13 +32,21 @@ namespace Ultra.Util
 
 			if (parsedArguments.Flags.Contains("analyze"))
 			{
-				new JMeterOutputAnalyzer().Analyze(_filename, jmxSettings);
+				var results = new JMeterOutputAnalyzer().Analyze(_filename, jmxSettings);
+				runner.PersistRunResults(results, true);
+
+				if (parsedArguments.Flags.Contains("wait"))
+					Console.ReadKey();
+
 				return;
 			}
 
 			// TODO: output run info...
 
 			runner.Run(_filename, jmxSettings);
+
+			if (parsedArguments.Flags.Contains("wait"))
+				Console.ReadKey();
 		}
 
 		private static void Bootstrap()

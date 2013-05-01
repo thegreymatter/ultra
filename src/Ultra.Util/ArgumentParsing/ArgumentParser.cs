@@ -6,7 +6,7 @@ namespace Ultra.Util.ArgumentParsing
 	public class ArgumentParser
 	{
 		private readonly string[] _validKeyValues = new[] {"--filename", "--duration", "--rampup", "--domain"};
-		private readonly string[] _validFlags = new[] {"--analyze"};
+		private readonly string[] _validFlags = new[] {"--analyze", "--wait"};
 
 		public UtilArguments ParseArguments(string[] args)
 		{
@@ -18,7 +18,7 @@ namespace Ultra.Util.ArgumentParsing
 				{
 					if (_validKeyValues.Any(x => x.Equals(args[i], StringComparison.OrdinalIgnoreCase)))
 					{
-						if (args.Length == i + 1 || !args[i+1].StartsWith("--"))
+						if (args.Length == i + 1 || args[i+1].StartsWith("--"))
 							throw new ArgumentParsingException();
 
 						arguments.KeyValues.Add(args[i].Substring(2).ToLower(), args[i + 1]);
