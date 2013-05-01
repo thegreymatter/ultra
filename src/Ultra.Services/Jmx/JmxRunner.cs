@@ -52,6 +52,7 @@ namespace Ultra.Services.Jmx
 			PersistRunResults(runResults);
 		}
 
+		// TODO: remove the onlyAnalysis parameter, and find a nicer way to do this!
 		public void PersistRunResults(RunResults runResults, bool onlyAnalysis = false)
 		{
 			var loadRun = !onlyAnalysis ? _storage.GetById(_loadRunId) : new LoadRun();

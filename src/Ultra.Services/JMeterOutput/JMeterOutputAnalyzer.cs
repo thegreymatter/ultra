@@ -38,7 +38,7 @@ namespace Ultra.Services.JMeterOutput
 
 			var overallExecutionTime = (maxTimeStamp.Subtract(minTimeStamp)).TotalSeconds;
 			
-			return new RunResults { Threads = _threadPoolStats.Values.ToList(), PVS = totalViews / overallExecutionTime };
+			return new RunResults { Threads = _threadPoolStats.Values.ToList(), PVS = (int)(totalViews / overallExecutionTime) };
 		}
 
 		private void AddParsedDataToStats(ParsedSet data, bool isAjax)
