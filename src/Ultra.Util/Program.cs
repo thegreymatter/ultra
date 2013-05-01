@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using Castle.Windsor;
 using Ultra.Config;
 using Ultra.Services.JMeterOutput;
@@ -11,15 +12,18 @@ namespace Ultra.Util
 	{
 		private static IWindsorContainer _container;
 		private static string _filename;
+		private static readonly Stopwatch Watch = new Stopwatch();
 
 		static void Main(string[] args)
 		{
+			Console.WriteLine("Starting to initialize utility...");
 			Bootstrap();
 
 			var runner = _container.Resolve<IJmxRunner>();
 
 			var parser = new ArgumentParser();
 			var parsedArguments = parser.ParseArguments(args);
+			DisplayStartMessage(parsedArguments);
 
 			// TODO: output parameters and run info
 
@@ -35,6 +39,8 @@ namespace Ultra.Util
 				var results = new JMeterOutputAnalyzer().Analyze(_filename, jmxSettings);
 				runner.PersistRunResults(results, true);
 
+				DisplayEndMessage();
+
 				if (parsedArguments.Flags.Contains("wait"))
 					Console.ReadKey();
 
@@ -45,8 +51,31 @@ namespace Ultra.Util
 
 			runner.Run(_filename, jmxSettings);
 
+			DisplayEndMessage();
+
 			if (parsedArguments.Flags.Contains("wait"))
 				Console.ReadKey();
+		}
+
+		private static void DisplayEndMessage()
+		{
+			Console.WriteLine("Finished running at : " + DateTime.Now);
+			Watch.Stop();
+			Console.WriteLine("Elapsed time : " + string.Format("{0:0.00}s", ((double)Watch.ElapsedMilliseconds / 1000)));
+		}
+
+		private static void DisplayStartMessage(UtilArguments arguments)
+		{
+			Console.WriteLine("Successfully parsed user input");
+			Console.WriteLine("Arguments are : ");
+			foreach (var arg in arguments.KeyValues)
+				Console.WriteLine(arg.Key + " = " + arg.Value);
+			Console.WriteLine("Flags are : ");
+			foreach (var arg in arguments.Flags)
+				Console.WriteLine(arg);
+
+			Console.WriteLine("Started to run at : " + DateTime.Now);
+			Watch.Start();
 		}
 
 		private static void Bootstrap()
