@@ -1,5 +1,6 @@
 ﻿using Castle.Windsor;
 using Ultra.Config;
+using Ultra.Services.JMeterOutput;
 using Ultra.Services.Jmx;
 using Ultra.Util.ArgumentParsing;
 
@@ -8,7 +9,7 @@ namespace Ultra.Util
 	public class Program
 	{
 		private static IWindsorContainer _container;
-		private static string _jmxFilename;
+		private static string _filename;
 
 		static void Main(string[] args)
 		{
@@ -19,14 +20,24 @@ namespace Ultra.Util
 			var parser = new ArgumentParser();
 			var parsedArguments = parser.ParseArguments(args);
 
-			_jmxFilename = parsedArguments.KeyValues["filename"];
+			// TODO: output parameters and run info
+
+			_filename = parsedArguments.KeyValues["filename"];
 			var jmxSettings = new JmxSettings {
 				Domain = parsedArguments.KeyValues["domain"],
 				Duration = int.Parse(parsedArguments.KeyValues["duration"]),
 				RampUp = int.Parse(parsedArguments.KeyValues["rampup"])
 			};
 
-			runner.Run(_jmxFilename, jmxSettings);
+			if (parsedArguments.Flags.Contains("analyze"))
+			{
+				new JMeterOutputAnalyzer().Analyze(_filename, jmxSettings);
+				return;
+			}
+
+			// TODO: output run info...
+
+			runner.Run(_filename, jmxSettings);
 		}
 
 		private static void Bootstrap()
