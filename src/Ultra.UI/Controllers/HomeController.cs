@@ -35,5 +35,11 @@ namespace Ultra.Controllers
 
 			return View();
 		}
+
+		[Route("run")]
+		public ActionResult Run()
+		{
+			return View();
+		}
 	}
 }
