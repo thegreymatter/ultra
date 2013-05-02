@@ -31,7 +31,7 @@ input[type='text'], input[type='password'], input[type='search'], textarea, sele
   -moz-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
   box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
 }
-input.large { width: 320px; }
+input.large, select.large { width: 320px; }
 input.small { width: 50px; }
 
 /* Custom buttons */
