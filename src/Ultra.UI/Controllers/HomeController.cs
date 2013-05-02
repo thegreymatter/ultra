@@ -1,8 +1,12 @@
 ﻿using System;
+using System.Configuration;
+using System.IO;
+using System.Reflection;
 using System.Web.Mvc;
 using MongoDB.Bson;
 using Ultra.Config.Routes;
 using Ultra.Dal.Repositories;
+using Ultra.Models;
 
 namespace Ultra.Controllers
 {
@@ -39,7 +43,14 @@ namespace Ultra.Controllers
 		[Route("run")]
 		public ActionResult Run()
 		{
-			return View();
+			var jmxFileDirectory = ConfigurationManager.AppSettings["JmxScripts"];
+			var jmxFiles = Directory.GetFiles(Path.Combine(Server.MapPath("/"), jmxFileDirectory), "*.jmx", SearchOption.TopDirectoryOnly);
+
+			var loadRuns = _loadRunRepository.GetMostRecentLoadRuns(10);
+
+			return View(new RunPageModel {
+				JmxFiles = jmxFiles, LoadRuns = loadRuns
+			});
 		}
 	}
 }

@@ -156,6 +156,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\Plumbing\Installers\ControllerInstaller.cs" />
     <Compile Include="Controllers\Plumbing\WindsorControllerFactory.cs" />
+    <Compile Include="Models\RunPageModel.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -188,7 +189,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Filters\" />
-    <Folder Include="Models\" />
     <Folder Include="static\img\" />
     <Folder Include="static\js\" />
   </ItemGroup>
