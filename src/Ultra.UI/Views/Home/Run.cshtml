@@ -7,33 +7,7 @@
 
 <h2>Run load</h2>
 
-<div class="row">
-	<div class="label">Script:</div>
-	<div class="input">
-		<select class="large" id="loadrun_script">
-			@foreach (var jmxScript in Model.JmxFiles)
-			{
-				var jmxScriptName = jmxScript.Substring(jmxScript.LastIndexOf('\\') + 1);
-				<option value="@jmxScript">@jmxScriptName</option>
-			}
-		</select>
-	</div>
-</div>
-<div class="row">
-	<div class="label">Domain:</div>
-	<div class="input"><input class="large" type="text" id="loadrun_domain"/></div>
-</div>
-<div class="row">
-	<div class="label">Duration:</div>
-	<div class="input"><input class="small" type="text" id="loadrun_duration"/> sec</div>
-</div>
-<div class="row">
-	<div class="label">RampUp Period:</div>
-	<div class="input"><input class="small" type="text" id="loadrun_rampup"/> sec</div>
-</div>
-<div class="row actions">
-	<input type="button" class="btn btn_primary" value="Run"/>
-</div>
+@Html.Partial("_RunLoadForm", Model.JmxFiles)
 
 
 <h2>History</h2>
