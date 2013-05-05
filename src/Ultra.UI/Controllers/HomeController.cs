@@ -7,6 +7,7 @@ using MongoDB.Bson;
 using Ultra.Config.Routes;
 using Ultra.Dal.Repositories;
 using Ultra.Models;
+using Ultra.Services.Jmx;
 
 namespace Ultra.Controllers
 {
@@ -51,6 +52,12 @@ namespace Ultra.Controllers
 			return View(new RunPageModel {
 				JmxFiles = jmxFiles, LoadRuns = loadRuns
 			});
+		}
+
+		[Route("-/start-run")]
+		public ActionResult StartRun(string filename, JmxSettings settings)
+		{
+			return Content("OK");
 		}
 	}
 }
