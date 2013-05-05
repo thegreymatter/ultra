@@ -25,6 +25,8 @@ namespace Ultra.Services.JMeterOutput
 				string line;
 				while ((line = fileStream.ReadLine()) != null)
 				{
+					// TODO: ignore requests that came before the ramp up period finished
+
 					var parsedSet = ParseLine(line);
 					if (!parsedSet.IsAjax()) ++totalViews;
 
@@ -54,12 +56,14 @@ namespace Ultra.Services.JMeterOutput
 			{
 				stats = _threadPoolStats[threadPoolName];
 			}
-			stats.AddRequest(data.Elapsed, (data.Elapsed > _elapsedThreshold), data.ResponseCode != "200");
+			stats.AddRequest(data, (data.Elapsed > _elapsedThreshold));
 		}
 
 
 		private static ParsedSet ParseLine(string line)
 		{
+			// TODO: add dynamic mapper here, so it won't matter what format the columns are in
+
 			var fields = line.Split(',');
 
 			return new ParsedSet
@@ -79,7 +83,7 @@ namespace Ultra.Services.JMeterOutput
 		public double PVS { get; set; }
 	}
 
-	internal struct ParsedSet
+	public struct ParsedSet
 	{
 		public DateTime TimeStamp { get; set; }
 		public string ResponseCode { get; set; }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Ultra.Services.JMeterOutput
@@ -13,29 +14,35 @@ namespace Ultra.Services.JMeterOutput
 		private int _errorCount;
 		public bool IsAjax { get; set; }
 
+		public List<ParsedSet> Requests { get; set; }
+
 		private readonly Dictionary<int, int> _responseTimesDistribution = new Dictionary<int, int>();
 
 		public ThreadPoolStats(string threadPoolName, bool isAjax)
 		{
 			_threadPoolName = threadPoolName;
 			IsAjax = isAjax;
+			Requests = new List<ParsedSet>();
 		}
 
-		public void AddRequest(int responseTime, bool isAboveThreshold, bool isError)
+		public void AddRequest(ParsedSet set, bool isAboveThreshold)
 		{
-			_responseTimeSum += responseTime;
+			Requests.Add(set);
+			var isError = set.ResponseCode != "200";
+
+			_responseTimeSum += set.Elapsed;
 
 			++_requestCount;
 
 			if (isAboveThreshold)
 			{
 				++_requestsAboveThresholdCount;
-				_overThresholdResponseTimeSum += responseTime;
+				_overThresholdResponseTimeSum += set.Elapsed;
 			}
 
 			if (isError) ++_errorCount;
 
-			var responseTimeBucket = (responseTime/5)*5;
+			var responseTimeBucket = (set.Elapsed / 5) * 5;
 			if (_responseTimesDistribution.ContainsKey(responseTimeBucket))
 			{
 				++_responseTimesDistribution[responseTimeBucket];
