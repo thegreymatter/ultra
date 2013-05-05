@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Web.Mvc;
@@ -57,6 +58,16 @@ namespace Ultra.Controllers
 		[Route("-/start-run")]
 		public ActionResult StartRun(string filename, JmxSettings settings)
 		{
+			var process = new Process {
+				StartInfo = new ProcessStartInfo {
+					FileName = "Ultra.Util.exe",
+					Arguments = string.Format("--filename {0} --domain {1} --duration {2} -- rampup {3}",
+					                          filename, settings.Domain, settings.Duration, settings.RampUp)
+				}
+			};
+
+			process.Start();
+
 			return Content("OK");
 		}
 	}
