@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="Cache\ICacheProvider.cs" />
     <Compile Include="ExtensionMethods\DateExtensions.cs" />
     <Compile Include="ExtensionMethods\EnumerableExtensions.cs" />
     <Compile Include="ExtensionMethods\StringExtensions.cs" />
