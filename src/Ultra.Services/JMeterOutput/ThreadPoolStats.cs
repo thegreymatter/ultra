@@ -14,6 +14,8 @@ namespace Ultra.Services.JMeterOutput
 		private int _errorCount;
 		public bool IsAjax { get; set; }
 
+		// this will hold buckets of requests for each minute in the load run
+		// it won't include the requests coming from the rampup period
 		public Dictionary<DateTime, Dictionary<string, int>> RequestBuckets { get; set; }
 
 		private readonly Dictionary<int, int> _responseTimesDistribution = new Dictionary<int, int>();
