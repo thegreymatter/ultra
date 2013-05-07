@@ -14,7 +14,7 @@ namespace Ultra.Services.JMeterOutput
 		private int _errorCount;
 		public bool IsAjax { get; set; }
 
-		public List<ParsedSet> Requests { get; set; }
+		public Dictionary<DateTime, Dictionary<string, int>> RequestBuckets { get; set; }
 
 		private readonly Dictionary<int, int> _responseTimesDistribution = new Dictionary<int, int>();
 
@@ -22,13 +22,14 @@ namespace Ultra.Services.JMeterOutput
 		{
 			_threadPoolName = threadPoolName;
 			IsAjax = isAjax;
-			Requests = new List<ParsedSet>();
+			RequestBuckets = new Dictionary<DateTime, Dictionary<string, int>>();
 		}
 
 		public void AddRequest(ParsedSet set, bool isAboveThreshold)
 		{
-			Requests.Add(set);
 			var isError = set.ResponseCode != "200";
+			if (!isError)
+				AddToRequestBuckets(set);
 
 			_responseTimeSum += set.Elapsed;
 
@@ -53,6 +54,18 @@ namespace Ultra.Services.JMeterOutput
 			}
 		}
 
+		private void AddToRequestBuckets(ParsedSet set)
+		{
+			var ts = set.TimeStamp;
+			var time = new DateTime(ts.Year, ts.Month, ts.Day, ts.Hour, ts.Minute, 0);
+			if (!RequestBuckets.ContainsKey(time))
+				RequestBuckets.Add(time, new Dictionary<string, int>());
+
+			if (!RequestBuckets[time].ContainsKey(set.ThreadPoolName))
+				RequestBuckets[time].Add(set.ThreadPoolName, 1);
+			else
+				RequestBuckets[time][set.ThreadPoolName] = RequestBuckets[time][set.ThreadPoolName]++;
+		}
 
 		public double GetErrorPercent()
 		{
