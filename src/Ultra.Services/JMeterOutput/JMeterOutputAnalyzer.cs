@@ -26,7 +26,7 @@ namespace Ultra.Services.JMeterOutput
 				string line;
 				while ((line = fileStream.ReadLine()) != null)
 				{
-					var parsedSet = ParseLine(line, runSettings);
+					var parsedSet = ParseLine(line);
 
 					if (!firstRequestTimestamp.HasValue)
 						firstRequestTimestamp = parsedSet.TimeStamp;
@@ -66,7 +66,7 @@ namespace Ultra.Services.JMeterOutput
 		}
 
 
-		private static ParsedSet ParseLine(string line, JmxSettings runSettings)
+		private static ParsedSet ParseLine(string line)
 		{
 			// TODO: add dynamic mapper here, so it won't matter what format the columns are in
 
