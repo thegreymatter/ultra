@@ -17,6 +17,7 @@ namespace Ultra.Services.JMeterOutput
 			var totalViews = 0;
 			var minTimeStamp = DateTime.MaxValue;
 			var maxTimeStamp = DateTime.MinValue;
+			DateTime? firstRequestTimestamp = null;
 
 			using (var fileStream = new StreamReader(filename))
 			{
@@ -25,9 +26,14 @@ namespace Ultra.Services.JMeterOutput
 				string line;
 				while ((line = fileStream.ReadLine()) != null)
 				{
-					// TODO: ignore requests that came before the ramp up period finished
+					var parsedSet = ParseLine(line, runSettings);
 
-					var parsedSet = ParseLine(line);
+					if (!firstRequestTimestamp.HasValue)
+						firstRequestTimestamp = parsedSet.TimeStamp;
+
+					if ((parsedSet.TimeStamp - firstRequestTimestamp.Value).TotalMinutes < runSettings.RampUp)
+						continue;
+
 					if (!parsedSet.IsAjax()) ++totalViews;
 
 					AddParsedDataToStats(parsedSet, parsedSet.IsAjax());
@@ -60,7 +66,7 @@ namespace Ultra.Services.JMeterOutput
 		}
 
 
-		private static ParsedSet ParseLine(string line)
+		private static ParsedSet ParseLine(string line, JmxSettings runSettings)
 		{
 			// TODO: add dynamic mapper here, so it won't matter what format the columns are in
 
