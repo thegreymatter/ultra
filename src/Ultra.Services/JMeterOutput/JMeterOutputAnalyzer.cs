@@ -12,6 +12,8 @@ namespace Ultra.Services.JMeterOutput
 		private readonly Dictionary<string, ThreadPoolStats> _threadPoolStats = new Dictionary<string, ThreadPoolStats>();
 		private readonly int _elapsedThreshold = int.Parse(ConfigurationManager.AppSettings["ResponseTimeThreshold"]);
 
+		public static string JMeterOutputArchive = ConfigurationManager.AppSettings["OutputArchive"];
+
 		public RunResults Analyze(string filename, JmxSettings runSettings)
 		{
 			var totalViews = 0;
@@ -31,7 +33,7 @@ namespace Ultra.Services.JMeterOutput
 					if (!firstRequestTimestamp.HasValue)
 						firstRequestTimestamp = parsedSet.TimeStamp;
 
-					if ((parsedSet.TimeStamp - firstRequestTimestamp.Value).TotalMinutes < runSettings.RampUp)
+					if ((parsedSet.TimeStamp - firstRequestTimestamp.Value).TotalSeconds < runSettings.RampUp)
 						continue;
 
 					if (!parsedSet.IsAjax()) ++totalViews;
