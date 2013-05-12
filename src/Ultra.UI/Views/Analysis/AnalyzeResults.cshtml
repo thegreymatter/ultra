@@ -11,12 +11,16 @@
 
 <h2>Load Analysis</h2>
 
+<div id="distribution_pie" class="float"></div>
+<div id="percentile_histogram" class="float"></div>
+
 <script type="text/javascript">
 	google.load('visualization', '1.0', {'packages':['corechart']});
 
-	google.setOnLoadCallback(drawChart);
+	google.setOnLoadCallback(drawDistributionChart);
+	google.setOnLoadCallback(drawPercentileHistogram);
 
-	function drawChart() {
+	function drawDistributionChart() {
 		var data = new google.visualization.DataTable();
 		data.addColumn('string', 'Thread Group');
 		data.addColumn('number', 'Requests Count');
@@ -37,6 +41,25 @@
 		var chart = new google.visualization.PieChart(document.getElementById('distribution_pie'));
 		chart.draw(data, options);
 	}
-</script>
+	
+	function drawPercentileHistogram() {
+		var data = google.visualization.arrayToDataTable([
+			['Percentile', 'Time'],
+			@for (int i=10; i<=90; i+=10) 
+			{
+				@:['P@i', @Model.Threads[0].GetPercentileX(i)]
+				if (i < 100) { 
+					@:, 
+				}
+			}
+		]);
 
-<div id="distribution_pie"></div>
+		var options = {
+			title: 'Company Performance',
+			vAxis: { title: 'Year', titleTextStyle: { color: 'red' } }
+		};
+
+		var chart = new google.visualization.BarChart(document.getElementById('percentile_histogram'));
+		chart.draw(data, options);
+	}
+</script>
