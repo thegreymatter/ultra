@@ -36,17 +36,20 @@
 <script type="text/javascript">
 	@{
 		var i = 0;
+		<text>var threads_percentile = [</text>
 		foreach (var threadGroup in Model.Threads)
 		{
-			<text>var thread_@i = { "name": "@threadGroup.GetThreadPoolName()", "percentiles":[</text>
+			<text>{ "name": "@threadGroup.GetThreadPoolName()", "percentiles": [</text>
 			for (int j = 10; j < 100; j += 10)
 			{
 				<text>["P_@(j)",@Model.Threads[i].GetPercentileX(j)]</text>
 				if (j != 90) { <text>,</text> }
 			}
 			i++;
-			<text>]};</text>
+			<text>] }</text>
+			if (threadGroup != Model.Threads.Last()) {<text>,</text>}
 		}
+		<text>];</text>
 	}
 </script>
 
@@ -81,23 +84,21 @@
 		}
 	
 		function drawPercentileHistogram() {
-			var data = google.visualization.arrayToDataTable([
-				['Percentile', 'Time'],
-				@for (int b=10; b<=90; b+=10) 
-				{
-					@:['P@(b)', @Model.Threads[0].GetPercentileX(i)]
-					if (b < 100) { 
-						@:, 
-					}
-				}
-			]);
+
+			var data = new google.visualization.DataTable();
+			data.addColumn('string', 'Percentile');
+			data.addColumn('number', 'Time');
+			data.addRows(threads_percentile[0]['percentiles']);
 
 			var options = {
 				title: 'Percentiles',
-				vAxis: { title: 'Percentile', titleTextStyle: { color: 'red' } }
+				width: 600,
+				height: 300,
+				legend: 'none',
+				bar: { groupWidth: '98%' }
 			};
 
-			var chart = new google.visualization.BarChart(document.getElementById('percentile_histogram'));
+			var chart = new google.visualization.ColumnChart(document.getElementById('percentile_histogram'));
 			chart.draw(data, options);
 		}
 	</script>
