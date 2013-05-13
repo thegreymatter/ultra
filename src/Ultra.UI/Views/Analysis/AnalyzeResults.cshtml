@@ -6,10 +6,27 @@
 }
 @section Head
 {
+	<link type="text/css" rel="stylesheet" href="../../static/css/runs-analysis.css">
 	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 }
 
 <h2>Load Analysis</h2>
+
+<div id="general_stats">
+	<div class="stat-container float">
+		<div class="value">30m</div>
+		<div class="description">Running time</div>
+	</div>
+	<div class="stat-container float">
+		<div class="value">34k</div>
+		<div class="description">Requests</div>
+	</div>
+	<div class="stat-container float">
+		<div class="value">181</div>
+		<div class="description">Total PVS</div>
+	</div>
+	<div class="breaker"></div>
+</div>
 
 <div id="distribution_pie" class="float"></div>
 <div id="percentile_histogram" class="float"></div>
