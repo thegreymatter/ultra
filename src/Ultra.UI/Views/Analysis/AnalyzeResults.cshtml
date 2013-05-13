@@ -70,9 +70,11 @@
 				}
 			]);
 
-			var options = {'title':'Requests Distribution',
-				'width':500,
-				'height':400};
+			var options = {
+				'title': 'Requests Distribution',
+				'legend': 'none',
+				'width':300,
+				'height':300};
 
 			var chart = new google.visualization.PieChart(document.getElementById('distribution_pie'));
 			chart.draw(data, options);
@@ -91,8 +93,8 @@
 			]);
 
 			var options = {
-				title: 'Company Performance',
-				vAxis: { title: 'Year', titleTextStyle: { color: 'red' } }
+				title: 'Percentiles',
+				vAxis: { title: 'Percentile', titleTextStyle: { color: 'red' } }
 			};
 
 			var chart = new google.visualization.BarChart(document.getElementById('percentile_histogram'));
