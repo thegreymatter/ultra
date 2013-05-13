@@ -48,7 +48,11 @@ namespace Ultra.Services.JMeterOutput
 
 			var overallExecutionTime = (maxTimeStamp.Subtract(minTimeStamp)).TotalSeconds;
 			
-			return new RunResults { Threads = _threadPoolStats.Values.ToList(), PVS = (int)(totalViews / overallExecutionTime) };
+			return new RunResults {
+				Threads = _threadPoolStats.Values.ToList(),
+				RunningTime = (int)(overallExecutionTime / 60),
+				PVS = (int)(totalViews / overallExecutionTime)
+			};
 		}
 
 		private void AddParsedDataToStats(ParsedSet data, bool isAjax)
@@ -88,6 +92,7 @@ namespace Ultra.Services.JMeterOutput
 	public struct RunResults
 	{
 		public IList<ThreadPoolStats> Threads { get; set; }
+		public int RunningTime { get; set; }
 		public double PVS { get; set; }
 	}
 
