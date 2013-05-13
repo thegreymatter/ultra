@@ -14,69 +14,88 @@
 
 <div id="general_stats">
 	<div class="stat-container float">
-		<div class="value">30m</div>
+		<div class="value">@(Model.RunningTime)m</div>
 		<div class="description">Running time</div>
 	</div>
 	<div class="stat-container float">
-		<div class="value">34k</div>
+		<div class="value">@(string.Format("{0:0.0}", Model.Threads.Sum(x => x.GetRequestCount()) / 1000))k</div>
 		<div class="description">Requests</div>
 	</div>
 	<div class="stat-container float">
-		<div class="value">181</div>
+		<div class="value">@Model.PVS</div>
 		<div class="description">Total PVS</div>
 	</div>
 	<div class="breaker"></div>
 </div>
 
-<div id="distribution_pie" class="float"></div>
-<div id="percentile_histogram" class="float"></div>
+<div id="stat_graphs">
+	<div id="distribution_pie" class="float"></div>
+	<div id="percentile_histogram" class="float"></div>
+</div>
 
 <script type="text/javascript">
-	google.load('visualization', '1.0', {'packages':['corechart']});
-
-	google.setOnLoadCallback(drawDistributionChart);
-	google.setOnLoadCallback(drawPercentileHistogram);
-
-	function drawDistributionChart() {
-		var data = new google.visualization.DataTable();
-		data.addColumn('string', 'Thread Group');
-		data.addColumn('number', 'Requests Count');
-		data.addRows([
-		@for (int i=0; i<Model.Threads.Count(); i++)
+	@{
+		var i = 0;
+		foreach (var threadGroup in Model.Threads)
 		{
-			@:['@Model.Threads[i].GetThreadPoolName()', @Model.Threads[i].GetRequestCount()]
-			if (i < Model.Threads.Count()-1) { 
-				@:, 
-			}
-		}
-		]);
-
-		var options = {'title':'Requests Distribution',
-			'width':500,
-			'height':400};
-
-		var chart = new google.visualization.PieChart(document.getElementById('distribution_pie'));
-		chart.draw(data, options);
-	}
-	
-	function drawPercentileHistogram() {
-		var data = google.visualization.arrayToDataTable([
-			['Percentile', 'Time'],
-			@for (int i=10; i<=90; i+=10) 
+			<text>var thread_@i = { "name": "@threadGroup.GetThreadPoolName()", "percentiles":[</text>
+			for (int j = 10; j < 100; j += 10)
 			{
-				@:['P@i', @Model.Threads[0].GetPercentileX(i)]
-				if (i < 100) { 
-					@:, 
-				}
+				<text>["P_@(j)",@Model.Threads[i].GetPercentileX(j)]</text>
+				if (j != 90) { <text>,</text> }
 			}
-		]);
-
-		var options = {
-			title: 'Company Performance',
-			vAxis: { title: 'Year', titleTextStyle: { color: 'red' } }
-		};
-
-		var chart = new google.visualization.BarChart(document.getElementById('percentile_histogram'));
-		chart.draw(data, options);
+			i++;
+			<text>]};</text>
+		}
 	}
 </script>
+
+	<script type="text/javascript">
+		google.load('visualization', '1.0', {'packages':['corechart']});
+
+		google.setOnLoadCallback(drawDistributionChart);
+		google.setOnLoadCallback(drawPercentileHistogram);
+
+		function drawDistributionChart() {
+			var data = new google.visualization.DataTable();
+			data.addColumn('string', 'Thread Group');
+			data.addColumn('number', 'Requests Count');
+			data.addRows([
+				@for (int c=0; c<Model.Threads.Count(); c++)
+				{
+					@:['@Model.Threads[c].GetThreadPoolName()', @Model.Threads[c].GetRequestCount()]
+					if (c < Model.Threads.Count()-1) { 
+						@:, 
+					}
+				}
+			]);
+
+			var options = {'title':'Requests Distribution',
+				'width':500,
+				'height':400};
+
+			var chart = new google.visualization.PieChart(document.getElementById('distribution_pie'));
+			chart.draw(data, options);
+		}
+	
+		function drawPercentileHistogram() {
+			var data = google.visualization.arrayToDataTable([
+				['Percentile', 'Time'],
+				@for (int b=10; b<=90; b+=10) 
+				{
+					@:['P@(b)', @Model.Threads[0].GetPercentileX(i)]
+					if (b < 100) { 
+						@:, 
+					}
+				}
+			]);
+
+			var options = {
+				title: 'Company Performance',
+				vAxis: { title: 'Year', titleTextStyle: { color: 'red' } }
+			};
+
+			var chart = new google.visualization.BarChart(document.getElementById('percentile_histogram'));
+			chart.draw(data, options);
+		}
+	</script>

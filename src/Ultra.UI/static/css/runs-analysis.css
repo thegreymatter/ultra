@@ -1,5 +1,5 @@
 ﻿#general_stats { margin-top: 20px; }
-#general_stats .stat-container { width: 100px;text-align: center; }
+#general_stats .stat-container { width: 125px;text-align: center; }
 #general_stats .stat-container .value { font-size: 32px;font-weight: bold; }
 #general_stats .stat-container .description { }
 
