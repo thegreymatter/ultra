@@ -30,7 +30,13 @@
 
 <div id="stat_graphs">
 	<div id="distribution_pie" class="float"></div>
-	<div id="percentile_histogram" class="float"></div>
+	<div class="historgram-area float">
+		<div id="percentile_histogram"></div>
+		@foreach (var threadGroup in Model.Threads)
+		{
+			<a href="#" class="show-percentile" data-threadgroup="@threadGroup.GetThreadPoolName()">@threadGroup.GetThreadPoolName()</a>@:, 
+		}
+	</div>
 </div>
 
 <script type="text/javascript">
@@ -53,52 +59,65 @@
 	}
 </script>
 
-	<script type="text/javascript">
-		google.load('visualization', '1.0', {'packages':['corechart']});
+<script type="text/javascript">
+	google.load('visualization', '1.0', {'packages':['corechart']});
 
-		google.setOnLoadCallback(drawDistributionChart);
-		google.setOnLoadCallback(drawPercentileHistogram);
+	google.setOnLoadCallback(drawDistributionChart);
+	google.setOnLoadCallback(drawPercentileHistogram);
 
-		function drawDistributionChart() {
-			var data = new google.visualization.DataTable();
-			data.addColumn('string', 'Thread Group');
-			data.addColumn('number', 'Requests Count');
-			data.addRows([
-				@for (int c=0; c<Model.Threads.Count(); c++)
-				{
-					@:['@Model.Threads[c].GetThreadPoolName()', @Model.Threads[c].GetRequestCount()]
-					if (c < Model.Threads.Count()-1) { 
-						@:, 
-					}
+	function drawDistributionChart() {
+		var data = new google.visualization.DataTable();
+		data.addColumn('string', 'Thread Group');
+		data.addColumn('number', 'Requests Count');
+		data.addRows([
+			@for (int c=0; c<Model.Threads.Count(); c++)
+			{
+				@:['@Model.Threads[c].GetThreadPoolName()', @Model.Threads[c].GetRequestCount()]
+				if (c < Model.Threads.Count()-1) { 
+					@:, 
 				}
-			]);
+			}
+		]);
 
-			var options = {
-				'title': 'Requests Distribution',
-				'legend': 'none',
-				'width':300,
-				'height':300};
+		var options = {
+			'title': 'Requests Distribution',
+			'legend': 'none',
+			'width':300,
+			'height':300};
 
-			var chart = new google.visualization.PieChart(document.getElementById('distribution_pie'));
-			chart.draw(data, options);
-		}
+		var chart = new google.visualization.PieChart(document.getElementById('distribution_pie'));
+		chart.draw(data, options);
+	}
 	
-		function drawPercentileHistogram() {
+	function drawPercentileHistogram() {
 
-			var data = new google.visualization.DataTable();
-			data.addColumn('string', 'Percentile');
-			data.addColumn('number', 'Time');
-			data.addRows(threads_percentile[0]['percentiles']);
+		var data = new google.visualization.DataTable();
+		data.addColumn('string', 'Percentile');
+		data.addColumn('number', 'Time');
+		data.addRows(threads_percentile[0]['percentiles']);
 
-			var options = {
-				title: 'Percentiles',
-				width: 600,
-				height: 300,
-				legend: 'none',
-				bar: { groupWidth: '98%' }
-			};
+		var options = {
+			title: 'Percentiles',
+			width: 600,
+			height: 300,
+			legend: 'none',
+			bar: { groupWidth: '98%' },
+			animation: {
+				duration: 750, easing: 'out'
+			}
+		};
 
-			var chart = new google.visualization.ColumnChart(document.getElementById('percentile_histogram'));
+		var chart = new google.visualization.ColumnChart(document.getElementById('percentile_histogram'));
+		chart.draw(data, options);
+
+		$('.show-percentile').click(function() {
+			var newData = null;
+			for (var i=0; i<threads_percentile.length; i++)
+				if (threads_percentile[i]['name'] == $(this).data('threadgroup'))
+					newData = threads_percentile[i];
+			for (var i = 0; i < 9; i++)
+				data.setValue(i, 1, newData['percentiles'][i][1]);
 			chart.draw(data, options);
-		}
-	</script>
+		});
+	}
+</script>
