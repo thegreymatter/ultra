@@ -37,4 +37,12 @@
 		}
 	});
 
+	$('tr.load-run').click(function() {
+		var detailsRow = $(this).next('.load-run-details');
+		if (detailsRow.hasClass('hidden'))
+			detailsRow.removeClass('hidden');
+		else
+			detailsRow.addClass('hidden');
+	});
+
 });
