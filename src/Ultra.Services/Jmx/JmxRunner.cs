@@ -44,6 +44,9 @@ namespace Ultra.Services.Jmx
 		public void Run(ObjectId loadRunId)
 		{
 			var loadRun = _loadRunRepository.GetLoadRun(loadRunId);
+			loadRun.StartTime = DateTime.Now;
+			loadRun.Status = LoadRunStatus.Running;
+			_loadRunRepository.SaveOrUpdate(loadRun);
 
 			_runTime = DateTime.Now.ToUnixTime().ToString();
 			_outputFile = Path.Combine(OutputArchive, _runTime + ".csv");
@@ -115,6 +118,7 @@ namespace Ultra.Services.Jmx
 			var loadRun = _storage.GetById(_loadRunId);
 			loadRun.EndTime = DateTime.Now;
 			loadRun.RunOutputFilename = outputFilename;
+			loadRun.Status = LoadRunStatus.Finished;
 			_storage.SaveOrUpdate(loadRun);
 		}
 

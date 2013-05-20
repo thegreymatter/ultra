@@ -14,6 +14,7 @@ namespace Ultra.Dal.Repositories
 		LoadRun[] GetPendingLoadRuns();
 		void CreateLoadRun(LoadRun loadRun);
 		void DeleteLoadRun(ObjectId loadRunId);
+		void SaveOrUpdate(LoadRun loadRun);
 	}
 
 	public class LoadRunRepository : ILoadRunRepository
@@ -51,6 +52,11 @@ namespace Ultra.Dal.Repositories
 		public void DeleteLoadRun(ObjectId loadRunId)
 		{
 			_loadRunStorage.Delete(loadRunId);
+		}
+
+		public void SaveOrUpdate(LoadRun loadRun)
+		{
+			_loadRunStorage.SaveOrUpdate(loadRun);
 		}
 	}
 }
