@@ -66,7 +66,12 @@ namespace Ultra.Services.Jmx
 				Percentile90 = x.GetPercentileX(90),
 				RequestCount = x.GetRequestCount()
 			}).ToArray();
+
 			loadRun.TotalPvs = runResults.PVS;
+			loadRun.Duration = runResults.RunningTime;
+			loadRun.StartTime = runResults.StartTime;
+			loadRun.EndTime = runResults.EndTime;
+
 			_storage.SaveOrUpdate(loadRun);
 		}
 

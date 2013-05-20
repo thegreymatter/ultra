@@ -20,6 +20,7 @@ namespace Ultra.Services.JMeterOutput
 			var minTimeStamp = DateTime.MaxValue;
 			var maxTimeStamp = DateTime.MinValue;
 			DateTime? firstRequestTimestamp = null;
+			DateTime? timestamp = null;
 
 			using (var fileStream = new StreamReader(filename))
 			{
@@ -39,18 +40,20 @@ namespace Ultra.Services.JMeterOutput
 					if (!parsedSet.IsAjax()) ++totalViews;
 
 					AddParsedDataToStats(parsedSet, parsedSet.IsAjax());
-					var timestamp = parsedSet.TimeStamp;
-					if (timestamp < minTimeStamp) minTimeStamp = timestamp;
-					if (timestamp > maxTimeStamp) maxTimeStamp = timestamp;
+					timestamp = parsedSet.TimeStamp;
+					if (timestamp < minTimeStamp) minTimeStamp = timestamp.Value;
+					if (timestamp > maxTimeStamp) maxTimeStamp = timestamp.Value;
 				}
 				fileStream.Close();
 			}
 
-			var overallExecutionTime = (maxTimeStamp.Subtract(minTimeStamp)).TotalSeconds;
-			
+			var overallExecutionTime = (maxTimeStamp.Subtract(firstRequestTimestamp.Value)).TotalSeconds;
+
 			return new RunResults {
 				Threads = _threadPoolStats.Values.ToList(),
 				RunningTime = (int)(overallExecutionTime / 60),
+				StartTime = firstRequestTimestamp.Value,
+				EndTime = timestamp.Value,
 				PVS = (int)(totalViews / overallExecutionTime)
 			};
 		}
@@ -92,7 +95,11 @@ namespace Ultra.Services.JMeterOutput
 	public struct RunResults
 	{
 		public IList<ThreadPoolStats> Threads { get; set; }
+
 		public int RunningTime { get; set; }
+		public DateTime StartTime { get; set; }
+		public DateTime EndTime { get; set; }
+
 		public double PVS { get; set; }
 	}
 
