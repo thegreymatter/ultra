@@ -122,18 +122,6 @@ namespace Ultra.Services.Jmx
 			_storage.SaveOrUpdate(loadRun);
 		}
 
-		private void PersistRunSettings(string filename, JmxSettings settings)
-		{
-			_storage.SaveOrUpdate(new LoadRun {
-				Id = _loadRunId,
-				StartTime = DateTime.Now,
-				JmxFilename = filename,
-				Domain = settings.Domain,
-				Duration = settings.Duration,
-				RampUp = settings.RampUp
-			});
-		}
-
 		private string ArchiveJmxFile(string filename)
 		{
 			try
