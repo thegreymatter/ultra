@@ -3,6 +3,7 @@ using System.Diagnostics;
 using Castle.Windsor;
 using Ultra.Config;
 using Ultra.Dal.Entities;
+using Ultra.Dal.Repositories;
 using Ultra.Services.JMeterOutput;
 using Ultra.Services.Jmx;
 using Ultra.Util.ArgumentParsing;
@@ -21,6 +22,7 @@ namespace Ultra.Util
 			Bootstrap();
 
 			var runner = _container.Resolve<IJmxRunner>();
+			var loadRunRepository = _container.Resolve<ILoadRunRepository>();
 
 			var parser = new ArgumentParser();
 			var parsedArguments = parser.ParseArguments(args);
@@ -50,7 +52,13 @@ namespace Ultra.Util
 
 			// TODO: output run info...
 
-			runner.Run(_filename, jmxSettings);
+			loadRunRepository.CreateLoadRun(new LoadRun {
+				Domain = jmxSettings.Domain,
+				Duration = jmxSettings.Duration,
+				JmxFilename = _filename,
+				RampUp = jmxSettings.RampUp,
+				Status = LoadRunStatus.Pending
+			});
 
 			DisplayEndMessage();
 

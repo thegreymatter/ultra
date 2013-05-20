@@ -65,23 +65,13 @@ namespace Ultra.Controllers
 		[Route("-/start-run")]
 		public ActionResult StartRun(string filename, JmxSettings settings)
 		{
-			var a = new SecureString();
-			foreach (var ch in "MF12345") // TODO: put this in configuration
-				a.AppendChar(ch);
-
-			var processInfo = new ProcessStartInfo {
-				FileName = Path.Combine(Server.MapPath("~"), "Ultra.Util.exe"),
-				Arguments = string.Format("--filename {0} --domain {1} --duration {2} -- rampup {3}",
-				                          filename, settings.Domain, settings.Duration, settings.RampUp),
-				UseShellExecute = false,
-				UserName = "ultra",
-				Password = a,
-				LoadUserProfile = true,
-				CreateNoWindow = false,
-				WindowStyle = ProcessWindowStyle.Normal
-			};
-
-			Process.Start(processInfo);
+			_loadRunRepository.CreateLoadRun(new LoadRun {
+				Domain = settings.Domain,
+				Duration = settings.Duration,
+				JmxFilename = filename,
+				RampUp = settings.RampUp,
+				Status = LoadRunStatus.Pending
+			});
 
 			return Json("OK");
 		}

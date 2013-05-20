@@ -81,24 +81,13 @@ namespace Ultra.WinService
 				{
 					// TODO: currently knows how to handle 1 load run at a time
 					var loadRun = pendingLoadRuns.Last();
-					StartLoadRun(loadRun);
+					_jmxRunner.Run(loadRun.Id);
 				}
 			}
 			finally
 			{
 				_timer.Start();
 			}
-		}
-
-		private void StartLoadRun(LoadRun loadRun)
-		{
-			// TODO: put settings in a sub document, and it then we could pass it on as-is
-			var jmxSettings = new JmxSettings {
-				Domain = loadRun.Domain,
-				Duration = loadRun.Duration,
-				RampUp = loadRun.RampUp
-			};
-			_jmxRunner.Run(loadRun.JmxFilename, jmxSettings);
 		}
 
 		protected override void OnStart(string[] args)
