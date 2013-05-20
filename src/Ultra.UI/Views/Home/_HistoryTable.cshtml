@@ -49,15 +49,18 @@
 							<td class="value-title">%spk</td>
 							<td class="value-title">%err</td>
 						</tr>
-						@foreach (var threadGroup in loadRun.PageMetrics)
+						@if (loadRun.PageMetrics != null)
 						{
-							<tr>
-								<td>@string.Format("{0:0.00}", threadGroup.PageName)</td>
-								<td class="value @figureClass(threadGroup.AverageResponseTime)">@string.Format("{0:0.00}", threadGroup.AverageResponseTime)</td>
-								<td class="value @figureClass(threadGroup.Percentile90)">@string.Format("{0:0.00}", threadGroup.Percentile90)</td>
-								<td class="value @figurePercentClass(threadGroup.PercentOverThreshold)">@string.Format("{0:0.00}", threadGroup.PercentOverThreshold)</td>
-								<td class="value @figurePercentClass(threadGroup.ErrorRate)">@string.Format("{0:0.00}", threadGroup.ErrorRate)</td>
-							</tr>
+							foreach (var threadGroup in loadRun.PageMetrics)
+							{
+								<tr>
+									<td>@string.Format("{0:0.00}", threadGroup.PageName)</td>
+									<td class="value @figureClass(threadGroup.AverageResponseTime)">@string.Format("{0:0.00}", threadGroup.AverageResponseTime)</td>
+									<td class="value @figureClass(threadGroup.Percentile90)">@string.Format("{0:0.00}", threadGroup.Percentile90)</td>
+									<td class="value @figurePercentClass(threadGroup.PercentOverThreshold)">@string.Format("{0:0.00}", threadGroup.PercentOverThreshold)</td>
+									<td class="value @figurePercentClass(threadGroup.ErrorRate)">@string.Format("{0:0.00}", threadGroup.ErrorRate)</td>
+								</tr>
+							}
 						}
 					</table>
 				</td>
