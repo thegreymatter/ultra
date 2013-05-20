@@ -30,7 +30,7 @@
 			<th></th>
 			<th></th>
 		</tr>
-		<tr class="running-load @(Model.Any(x => x.Status == LoadRunStatus.Pending) ? "" : "hidden")">
+		<tr class="running-load @(Model.Any(x => x.Status != LoadRunStatus.Finished) ? "" : "hidden")">
 			<td colspan="6">
 				<img src="~/static/img/loader_green.gif" class="loader"/>
 				<i>Currently running load...</i>
