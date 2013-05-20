@@ -78,5 +78,15 @@ namespace Ultra.Controllers
 
 			return Json("OK");
 		}
+
+		[Route("-/delete-run")]
+		public ActionResult DeleteRun(string loadRunId)
+		{
+			// TODO: remove the files as well
+			var runId = ObjectId.Parse(loadRunId);
+			_loadRunRepository.DeleteLoadRun(runId);
+
+			return Json("OK");
+		}
 	}
 }

@@ -8,15 +8,17 @@
 			<th>Duration</th>
 			<th>RampUp</th>
 			<th></th>
+			<th></th>
 		</tr>
 		@foreach (var loadRun in Model)
 		{
-			<tr>
+			<tr data-loadrunid="@loadRun.Id">
 				<td class="load-run">@loadRun.StartTime.ToShortDateString()</td>
 				<td class="load-run">@loadRun.TotalPvs</td>
 				<td class="load-run">@loadRun.Duration</td>
 				<td class="load-run">@loadRun.RampUp</td>
 				<td class="load-run"><a href="#">Details</a></td>
+				<td class="load-run"><a href="#" class="delete">Delete</a></td>
 			</tr>
 		}
 	</tbody>
