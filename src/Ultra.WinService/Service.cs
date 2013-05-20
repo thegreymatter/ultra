@@ -36,6 +36,15 @@ namespace Ultra.WinService
 			_loadRunRepository = _container.Resolve<ILoadRunRepository>();
 			_jmxRunner = _container.Resolve<IJmxRunner>();
 
+			_loadRunRepository.CreateLoadRun(new LoadRun
+			{
+				Domain = "uat.shopyourway.com",
+				Duration = 1800,
+				JmxFilename = "C:\\utils\\apache-jmeter-2.9\\jmx_archive\\1367244146.46075.jmx",
+				RampUp = 120,
+				Status = LoadRunStatus.Pending
+			});
+
 			_timer = new Timer {
 				Enabled = true,
 				Interval = 60000
