@@ -12,7 +12,7 @@
 				rampup: $('#loadrun_rampup').val()
 			},
 			success: function() {
-
+				$('.running-load').show();
 			},
 			error: function() {
 

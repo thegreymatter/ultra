@@ -29,6 +29,11 @@
 			<th></th>
 			<th></th>
 		</tr>
+		<tr class="running-load hidden">
+			<td colspan="6">
+				<i>Currently running load...</i>
+			</td>
+		</tr>
 		@foreach (var loadRun in Model)
 		{
 			<tr data-loadrunid="@loadRun.Id" class="load-run">
