@@ -174,6 +174,7 @@
     <Content Include="static\css\runs-history.css" />
     <Content Include="static\css\main.css" />
     <Content Include="static\css\reset.css" />
+    <Content Include="static\img\loader_green.gif" />
     <Content Include="static\js\analyze.js" />
     <Content Include="static\js\config.js" />
     <Content Include="static\js\load-run.js" />
@@ -195,7 +196,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Filters\" />
-    <Folder Include="static\img\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

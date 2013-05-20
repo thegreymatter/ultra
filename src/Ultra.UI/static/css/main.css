@@ -16,7 +16,7 @@ h2 { font-size: 18px;color: #151515;padding-top: 10px;border-bottom: solid 1px #
 .row .input { display: inline-block;width: 400px;}
 .row.actions { padding-top: 13px;border-bottom: none;text-align: right; }
 
-
+.loader { vertical-align: middle; }
 
 input[type='text'], input[type='password'], input[type='search'], textarea, select[multiple] {
   min-height: 20px !important;
