@@ -1,23 +1,25 @@
 ﻿@model object
 
-<div class="row">
-	<div class="label">Output file:</div>
-	<div class="input">
-		<input type="file" id="loadrun_output"/>
+<form method="POST" action="/-/analyze-output" enctype="multipart/form-data" id="analyze-output-form">
+	<div class="row">
+		<div class="label">Output file:</div>
+		<div class="input">
+			<input type="file" id="output_file" name="output_file"/>
+		</div>
 	</div>
-</div>
-<div class="row">
-	<div class="label">Domain:</div>
-	<div class="input"><input class="large" type="text" id="loadrun_domain"/></div>
-</div>
-<div class="row">
-	<div class="label">Duration:</div>
-	<div class="input"><input class="small" type="text" id="loadrun_duration"/> sec</div>
-</div>
-<div class="row">
-	<div class="label">RampUp Period:</div>
-	<div class="input"><input class="small" type="text" id="loadrun_rampup"/> sec</div>
-</div>
-<div class="row actions">
-	<input type="button" id="start-load-run" class="btn btn_primary" value="Run"/>
-</div>
+	<div class="row">
+		<div class="label">Domain:</div>
+		<div class="input"><input class="large" type="text" id="output_domain" name="output_domain"/></div>
+	</div>
+	<div class="row">
+		<div class="label">Duration:</div>
+		<div class="input"><input class="small" type="text" id="output_duration" name="output_duration"/> sec</div>
+	</div>
+	<div class="row">
+		<div class="label">RampUp Period:</div>
+		<div class="input"><input class="small" type="text" id="output_rampup" name="output_rampup"/> sec</div>
+	</div>
+	<div class="row actions">
+		<input type="button" id="analyze-output" class="btn btn_primary" value="Analyze"/>
+	</div>
+</form>

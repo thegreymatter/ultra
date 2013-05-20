@@ -3,6 +3,7 @@ using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Security;
+using System.Web;
 using System.Web.Mvc;
 using MongoDB.Bson;
 using Ultra.Config.Routes;
@@ -90,9 +91,15 @@ namespace Ultra.Controllers
 		}
 
 		[Route("analyze")]
-		public ActionResult AnalyzeOutput()
+		public ActionResult AnalyzeOutputForm()
 		{
 			return View();
+		}
+
+		[Route("-/analyze-output")]
+		public ActionResult AnalyzeOutput(HttpPostedFileBase output_file, string output_domain, string output_duration, string output_rampup)
+		{
+			return Content("OK");
 		}
 	}
 }
