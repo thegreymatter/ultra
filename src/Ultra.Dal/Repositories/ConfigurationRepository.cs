@@ -23,7 +23,7 @@ namespace Ultra.Dal.Repositories
 
 		public UltraConfiguration GetConfiguration()
 		{
-			return _configStorage.GetAll().First();
+			return _configStorage.GetAll().FirstOrDefault();
 		}
 
 		public void SaveConfiguration(UltraConfiguration config)
