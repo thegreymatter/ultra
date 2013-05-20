@@ -9,6 +9,7 @@ using MongoDB.Bson;
 using Ultra.Config.Routes;
 using Ultra.Dal.Repositories;
 using Ultra.Models;
+using Ultra.Services.JMeterOutput;
 using Ultra.Services.Jmx;
 
 namespace Ultra.Controllers
@@ -16,10 +17,14 @@ namespace Ultra.Controllers
 	public class HomeController : Controller
 	{
 		private readonly ILoadRunRepository _loadRunRepository;
+		private readonly IJMeterOutputAnalyzer _jMeterOutputAnalyzer;
+		private readonly IJmxRunner _jmxRunner;
 
-		public HomeController(ILoadRunRepository loadRunRepository)
+		public HomeController(ILoadRunRepository loadRunRepository, IJMeterOutputAnalyzer jMeterOutputAnalyzer, IJmxRunner jmxRunner)
 		{
 			_loadRunRepository = loadRunRepository;
+			_jMeterOutputAnalyzer = jMeterOutputAnalyzer;
+			_jmxRunner = jmxRunner;
 		}
 
 		[Route("")]
@@ -93,12 +98,25 @@ namespace Ultra.Controllers
 		[Route("analyze")]
 		public ActionResult AnalyzeOutputForm()
 		{
-			return View();
+			var outputDirectory = JMeterOutputAnalyzer.JMeterOutputArchive;
+			var outputFiles = Directory.GetFiles(Path.Combine(Server.MapPath("/"), outputDirectory), "*.csv", SearchOption.TopDirectoryOnly);
+			
+			return View(outputFiles);
 		}
 
 		[Route("-/analyze-output")]
-		public ActionResult AnalyzeOutput(HttpPostedFileBase output_file, string output_domain, string output_duration, string output_rampup)
+		public ActionResult AnalyzeOutput(string output_file, string output_domain, int output_duration, int output_rampup)
 		{
+			var outputFile = Path.Combine(JMeterOutputAnalyzer.JMeterOutputArchive, output_file);
+			var jmxSettings = new JmxSettings {
+				Domain = output_domain,
+				Duration = output_duration,
+				RampUp = output_rampup
+			};
+
+			var outputResults = _jMeterOutputAnalyzer.Analyze(outputFile, jmxSettings);
+			_jmxRunner.PersistRunResults(outputResults, onlyAnalysis:true);
+
 			return Content("OK");
 		}
 	}

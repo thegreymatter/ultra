@@ -1,10 +1,19 @@
-﻿@model object
+﻿@model string[]
+@{
+	var outputFiles = Model;
+}
 
 <form method="POST" action="/-/analyze-output" enctype="multipart/form-data" id="analyze-output-form">
 	<div class="row">
 		<div class="label">Output file:</div>
 		<div class="input">
-			<input type="file" id="output_file" name="output_file"/>
+			<select class="large" id="output_file" name="output_file">
+			@foreach (var outputFile in outputFiles)
+			{
+				var outputFilename = outputFile.Substring(outputFile.LastIndexOf('\\') + 1);
+				<option value="@outputFile">@outputFilename</option>
+			}
+		</select>
 		</div>
 	</div>
 	<div class="row">
