@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{2DD0F60E-0A86-45DB-B489-8006CA1DE56B}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{8783F3E8-E71E-4ABB-89AA-57C49475DB2C}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Ultra.Util</RootNamespace>
-    <AssemblyName>Ultra.Util</AssemblyName>
+    <RootNamespace>Ultra.WinService</RootNamespace>
+    <AssemblyName>Ultra.WinService</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -32,47 +32,70 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Castle.Core">
+      <HintPath>..\packages\Castle.Core.3.2.0\lib\net40-client\Castle.Core.dll</HintPath>
+    </Reference>
     <Reference Include="Castle.Windsor">
-      <HintPath>..\Ultra.UI\bin\Castle.Windsor.dll</HintPath>
+      <HintPath>..\packages\Castle.Windsor.3.2.0\lib\net40\Castle.Windsor.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Web" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
+    <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ArgumentParsing\ArgumentParser.cs" />
-    <Compile Include="ArgumentParsing\ArgumentParsingException.cs" />
-    <Compile Include="ArgumentParsing\UtilArguments.cs" />
+    <Compile Include="ProjectInstaller.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ProjectInstaller.Designer.cs">
+      <DependentUpon>ProjectInstaller.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Service.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Service.Designer.cs">
+      <DependentUpon>Service.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="ProjectInstaller.resx">
+      <DependentUpon>ProjectInstaller.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Service.resx">
+      <DependentUpon>Service.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Ultra.Config\Ultra.Config.csproj">
-      <Project>{9AAC1BB7-778A-487D-A3E2-DA15763995B2}</Project>
+      <Project>{9aac1bb7-778a-487d-a3e2-da15763995b2}</Project>
       <Name>Ultra.Config</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Ultra.Dal\Ultra.Dal.csproj">
+      <Project>{c66c137a-1d3b-4012-9989-72f703cdce1f}</Project>
+      <Name>Ultra.Dal</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Ultra.Services\Ultra.Services.csproj">
-      <Project>{FC17C151-CF25-4BA4-B641-DBE03E420555}</Project>
+      <Project>{fc17c151-cf25-4ba4-b641-dbe03e420555}</Project>
       <Name>Ultra.Services</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Ultra.UI\Ultra.UI.csproj">
-      <Project>{2C95C756-AA3B-48AA-952D-01349217D90D}</Project>
-      <Name>Ultra.UI</Name>
+    <ProjectReference Include="..\Ultra.Util\Ultra.Util.csproj">
+      <Project>{2dd0f60e-0a86-45db-b489-8006ca1de56b}</Project>
+      <Name>Ultra.Util</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="app.config" />
+    <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>copy $(TargetPath) $(ProjectDir)..\Ultra.UI\</PostBuildEvent>
-  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

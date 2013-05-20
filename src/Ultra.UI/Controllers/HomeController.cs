@@ -2,7 +2,7 @@
 using System.Configuration;
 using System.Diagnostics;
 using System.IO;
-using System.Reflection;
+using System.Security;
 using System.Web.Mvc;
 using MongoDB.Bson;
 using Ultra.Config.Routes;
@@ -58,17 +58,25 @@ namespace Ultra.Controllers
 		[Route("-/start-run")]
 		public ActionResult StartRun(string filename, JmxSettings settings)
 		{
-			var process = new Process {
-				StartInfo = new ProcessStartInfo {
-					FileName = "Ultra.Util.exe",
-					Arguments = string.Format("--filename {0} --domain {1} --duration {2} -- rampup {3}",
-					                          filename, settings.Domain, settings.Duration, settings.RampUp)
-				}
+			var a = new SecureString();
+			foreach (var ch in "MF12345") // TODO: put this in configuration
+				a.AppendChar(ch);
+
+			var processInfo = new ProcessStartInfo {
+				FileName = Path.Combine(Server.MapPath("~"), "Ultra.Util.exe"),
+				Arguments = string.Format("--filename {0} --domain {1} --duration {2} -- rampup {3}",
+				                          filename, settings.Domain, settings.Duration, settings.RampUp),
+				UseShellExecute = false,
+				UserName = "ultra",
+				Password = a,
+				LoadUserProfile = true,
+				CreateNoWindow = false,
+				WindowStyle = ProcessWindowStyle.Normal
 			};
 
-			process.Start();
+			Process.Start(processInfo);
 
-			return Content("OK");
+			return Json("OK");
 		}
 	}
 }

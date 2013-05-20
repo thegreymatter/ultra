@@ -10,7 +10,7 @@ namespace Ultra.Dal.Plumbing
 		T GetById(ObjectId id);
 		void SaveOrUpdate(T entity);
 		MongoCursor<T> RunQuery(IMongoQuery query);
-		MongoCursor<T> RunQueryOnAll();
+		MongoCursor<T> GetAll();
 	}
 
 	public class Storage<T> : IStorage<T> where T : EntityBase
@@ -37,7 +37,7 @@ namespace Ultra.Dal.Plumbing
 			return GetCollection().Find(query);
 		}
 
-		public MongoCursor<T> RunQueryOnAll()
+		public MongoCursor<T> GetAll()
 		{
 			return GetCollection().FindAll();
 		}

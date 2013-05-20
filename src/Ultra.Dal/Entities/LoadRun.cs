@@ -6,6 +6,7 @@ namespace Ultra.Dal.Entities
 	[Persistence(CollectionName = "loadruns")]
 	public class LoadRun : EntityBase
 	{
+		public LoadRunStatus Status { get; set; }
 		public DateTime StartTime { get; set; }
 		public DateTime EndTime { get; set; }
 
@@ -18,6 +19,13 @@ namespace Ultra.Dal.Entities
 
 		public double TotalPvs { get; set; }
 		public PageMetric[] PageMetrics { get; set; }
+	}
+
+	public enum LoadRunStatus
+	{
+		Pending = 1,
+		Running = 2,
+		Finished = 3
 	}
 
 	public class PageMetric
