@@ -15,6 +15,7 @@ out/
 bin/
 obj/
 src/Ohio.sln.SolutionBuild*.*
+*.exe
 
 #############################################################
 #             ReSharper Auto Generated Files
