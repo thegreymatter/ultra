@@ -5,7 +5,7 @@ namespace Ultra.Dal.Entities
 	[Persistence(CollectionName = "configuration")]
 	public class UltraConfiguration : EntityBase
 	{
-		public string[] Servers{ get; set; }
+		public string[] Servers { get; set; }
 		public string JMeterBatFile { get; set; }
 		public string JmxScripts { get; set; }
 		public string JmxFileArchive { get; set; }

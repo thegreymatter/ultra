@@ -21,5 +21,13 @@ namespace Ultra.Controllers
 
 			return View(config);
 		}
+
+		[Route("-/save-configuration")]
+		public ActionResult SaveConfiguration(UltraConfiguration configuration)
+		{
+			_configurationRepository.SaveConfiguration(configuration);
+
+			return Json("OK");
+		}
 	}
 }

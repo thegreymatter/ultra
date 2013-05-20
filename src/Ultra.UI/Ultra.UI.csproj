@@ -175,6 +175,7 @@
     <Content Include="static\css\main.css" />
     <Content Include="static\css\reset.css" />
     <Content Include="static\js\analyze.js" />
+    <Content Include="static\js\config.js" />
     <Content Include="static\js\load-run.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

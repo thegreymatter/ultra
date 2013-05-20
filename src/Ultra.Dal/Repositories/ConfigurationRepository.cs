@@ -28,7 +28,7 @@ namespace Ultra.Dal.Repositories
 
 		public void SaveConfiguration(UltraConfiguration config)
 		{
-			var currentConfig = _configStorage.GetAll().First();
+			var currentConfig = _configStorage.GetAll().FirstOrDefault() ?? new UltraConfiguration();
 			config.Id = currentConfig.Id;
 			_configStorage.SaveOrUpdate(config);
 		}
