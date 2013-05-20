@@ -88,5 +88,11 @@ namespace Ultra.Controllers
 
 			return Json("OK");
 		}
+
+		[Route("analyze")]
+		public ActionResult AnalyzeOutput()
+		{
+			return View();
+		}
 	}
 }

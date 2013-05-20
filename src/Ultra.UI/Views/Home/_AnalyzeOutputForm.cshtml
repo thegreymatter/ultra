@@ -1,0 +1,23 @@
+﻿@model object
+
+<div class="row">
+	<div class="label">Output file:</div>
+	<div class="input">
+		<input type="file" id="loadrun_output"/>
+	</div>
+</div>
+<div class="row">
+	<div class="label">Domain:</div>
+	<div class="input"><input class="large" type="text" id="loadrun_domain"/></div>
+</div>
+<div class="row">
+	<div class="label">Duration:</div>
+	<div class="input"><input class="small" type="text" id="loadrun_duration"/> sec</div>
+</div>
+<div class="row">
+	<div class="label">RampUp Period:</div>
+	<div class="input"><input class="small" type="text" id="loadrun_rampup"/> sec</div>
+</div>
+<div class="row actions">
+	<input type="button" id="start-load-run" class="btn btn_primary" value="Run"/>
+</div>
