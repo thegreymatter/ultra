@@ -1,4 +1,5 @@
-﻿@model Ultra.Dal.Entities.LoadRun[]
+﻿@using Ultra.Dal.Entities
+@model Ultra.Dal.Entities.LoadRun[]
 
 @{
 	// TODO: get this from some configuration!
@@ -29,12 +30,12 @@
 			<th></th>
 			<th></th>
 		</tr>
-		<tr class="running-load hidden">
+		<tr class="running-load @(Model.Any(x => x.Status == LoadRunStatus.Pending) ? "" : "hidden")">
 			<td colspan="6">
 				<i>Currently running load...</i>
 			</td>
 		</tr>
-		@foreach (var loadRun in Model)
+		@foreach (var loadRun in Model.Where(x => x.Status == LoadRunStatus.Finished))
 		{
 			<tr data-loadrunid="@loadRun.Id" class="load-run">
 				<td class="load-run">@loadRun.StartTime.ToShortDateString()</td>
