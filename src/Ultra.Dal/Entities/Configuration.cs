@@ -10,5 +10,7 @@ namespace Ultra.Dal.Entities
 		public string JmxScripts { get; set; }
 		public string JmxFileArchive { get; set; }
 		public string OutputArchive { get; set; }
+
+		public JmxSettings DefaultSettings { get; set; }
 	}
 }

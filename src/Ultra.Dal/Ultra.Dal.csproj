@@ -57,6 +57,7 @@
   <ItemGroup>
     <Compile Include="Entities\Configuration.cs" />
     <Compile Include="Entities\EntityBase.cs" />
+    <Compile Include="Entities\JmxSettings.cs" />
     <Compile Include="Plumbing\PersistenceAttribute.cs" />
     <Compile Include="Plumbing\Storage.cs" />
     <Compile Include="Plumbing\MongoProvider.cs" />

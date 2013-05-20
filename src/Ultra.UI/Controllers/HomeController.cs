@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using MongoDB.Bson;
 using Ultra.Config.Routes;
+using Ultra.Dal.Entities;
 using Ultra.Dal.Repositories;
 using Ultra.Models;
 using Ultra.Services.JMeterOutput;

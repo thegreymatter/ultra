@@ -124,11 +124,4 @@ namespace Ultra.Services.Jmx
 			return newFilename;
 		}
 	}
-
-	public class JmxSettings
-	{
-		public string Domain { get; set; }
-		public int Duration { get; set; }
-		public int RampUp { get; set; }
-	}
 }

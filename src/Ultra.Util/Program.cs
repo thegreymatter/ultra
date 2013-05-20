@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using Castle.Windsor;
 using Ultra.Config;
+using Ultra.Dal.Entities;
 using Ultra.Services.JMeterOutput;
 using Ultra.Services.Jmx;
 using Ultra.Util.ArgumentParsing;

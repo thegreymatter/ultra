@@ -1,4 +1,4 @@
-﻿using Ultra.Services.Jmx;
+﻿using Ultra.Dal.Entities;
 
 namespace Ultra.Services.JMeterOutput
 {

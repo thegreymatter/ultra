@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
-using Ultra.Services.Jmx;
+using Ultra.Dal.Entities;
 
 namespace Ultra.Services.JMeterOutput
 {

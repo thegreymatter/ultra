@@ -1,8 +1,8 @@
 ﻿using System.IO;
 using System.Web.Mvc;
 using Ultra.Config.Routes;
+using Ultra.Dal.Entities;
 using Ultra.Services.JMeterOutput;
-using Ultra.Services.Jmx;
 
 namespace Ultra.Controllers
 {
