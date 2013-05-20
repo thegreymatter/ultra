@@ -12,6 +12,7 @@ namespace Ultra.Dal.Repositories
 		LoadRun[] GetMostRecentLoadRuns(int amount);
 		LoadRun GetLoadRun(ObjectId loadRunId);
 		LoadRun[] GetPendingLoadRuns();
+		void CreateLoadRun(LoadRun loadRun);
 	}
 
 	public class LoadRunRepository : ILoadRunRepository
@@ -36,7 +37,14 @@ namespace Ultra.Dal.Repositories
 
 		public LoadRun[] GetPendingLoadRuns()
 		{
-			return _loadRunStorage.RunQuery(Query.EQ("Status", "1")).ToArray();
+			var query = Query<LoadRun>.EQ(x => x.Status, LoadRunStatus.Pending);
+			var mongoCursor = _loadRunStorage.RunQuery(query);
+			return mongoCursor.ToArray();
+		}
+
+		public void CreateLoadRun(LoadRun loadRun)
+		{
+			_loadRunStorage.SaveOrUpdate(loadRun);
 		}
 	}
 }
