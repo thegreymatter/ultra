@@ -3,14 +3,14 @@
 
 @{
 	// TODO: get this from some configuration!
-	var Warning = 2000;
-	var Critical = 3000;
-	var percentWarning = 1;
-	var percentCritical = 2;
+	const int warning = 2000;
+	const int critical = 3000;
+	const int percentWarning = 1;
+	const int percentCritical = 2;
 
 	Func<int, string> figureClass = x => {
-		if (x < Warning) return "";
-		if (x < Critical) return "warning";
+		if (x < warning) return "";
+		if (x < critical) return "warning";
 		return "critical";
 	};
 	Func<double, string> figurePercentClass = x => {
