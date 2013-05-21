@@ -44,6 +44,9 @@ namespace Ultra.Services.Jmx
 		public void Run(ObjectId loadRunId)
 		{
 			var loadRun = _loadRunRepository.GetLoadRun(loadRunId);
+			if (loadRun.Status != LoadRunStatus.Pending)
+				return;
+
 			loadRun.StartTime = DateTime.Now;
 			loadRun.Status = LoadRunStatus.Running;
 			_loadRunRepository.SaveOrUpdate(loadRun);

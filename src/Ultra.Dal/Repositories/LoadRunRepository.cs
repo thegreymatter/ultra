@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using MongoDB.Bson;
-using MongoDB.Driver;
 using MongoDB.Driver.Builders;
 using Ultra.Dal.Entities;
 using Ultra.Dal.Plumbing;

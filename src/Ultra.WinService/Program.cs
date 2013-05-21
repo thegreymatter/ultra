@@ -9,7 +9,8 @@ namespace Ultra.WinService
 	static class Program
 	{
 		/// <summary>
-		/// The main entry point for the application.
+		/// Run this exe file from the command line with '--install' to install as a windows service
+		/// Run with '--uninstall' to remove
 		/// </summary>
 		static void Main(string[] args)
 		{

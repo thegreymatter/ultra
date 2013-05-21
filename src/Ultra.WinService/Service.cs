@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.ServiceProcess;
-using System.Text;
 using System.Timers;
 using Castle.Windsor;
 using Ultra.Config;
-using Ultra.Dal.Entities;
 using Ultra.Dal.Repositories;
 using Ultra.Services.Jmx;
 
@@ -21,8 +15,6 @@ namespace Ultra.WinService
 		// TODO: add logging to this service!
 
 		private Timer _timer;
-		private Bootstrapper _bootstrapper;
-		private IWindsorContainer _container;
 
 		private ILoadRunRepository _loadRunRepository;
 		private IJmxRunner _jmxRunner;
@@ -32,10 +24,12 @@ namespace Ultra.WinService
 			InitializeComponent();
 
 			InitializeContainer();
-
-			_loadRunRepository = _container.Resolve<ILoadRunRepository>();
-			_jmxRunner = _container.Resolve<IJmxRunner>();
 			
+			InitializeServiceTimer();
+		}
+
+		private void InitializeServiceTimer()
+		{
 			_timer = new Timer {
 				Enabled = true,
 				Interval = 60000
@@ -57,9 +51,17 @@ namespace Ultra.WinService
 				typeof (Services.Jmx.JmxRunner).Assembly
 			};
 
-			_container = new WindsorContainer();
-			_bootstrapper = new Bootstrapper(_container);
-			_bootstrapper.RegisterServices(assemblies);
+			var container = new WindsorContainer();
+			var bootstrapper = new Bootstrapper(container);
+			bootstrapper.RegisterServices(assemblies);
+
+			RegisterServices(container);
+		}
+
+		private void RegisterServices(IWindsorContainer container)
+		{
+			_loadRunRepository = container.Resolve<ILoadRunRepository>();
+			_jmxRunner = container.Resolve<IJmxRunner>();
 		}
 
 		private void CheckLoadRunsStatus(object sender, ElapsedEventArgs elapsedEventArgs)
