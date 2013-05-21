@@ -148,14 +148,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_Start\AuthConfig.cs" />
-    <Compile Include="App_Start\BundleConfig.cs" />
-    <Compile Include="App_Start\FilterConfig.cs" />
-    <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AnalysisController.cs" />
     <Compile Include="Controllers\ConfigurationController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\RunController.cs" />
+    <Compile Include="Controllers\HistoryController.cs" />
     <Compile Include="Controllers\Plumbing\Installers\ControllerInstaller.cs" />
     <Compile Include="Controllers\Plumbing\WindsorControllerFactory.cs" />
     <Compile Include="Models\RunPageModel.cs" />
@@ -188,13 +184,12 @@
       <DependentUpon>Web.config</DependentUpon>
     </Content>
     <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\History\RunsHistory.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
     <Folder Include="Filters\" />
   </ItemGroup>
   <ItemGroup>
@@ -215,25 +210,22 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Home\Analysis.cshtml" />
+    <Content Include="Views\Run\Run.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Home\Run.cshtml" />
+    <Content Include="Views\Shared\_HistoryTable.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Home\_HistoryTable.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Home\_RunLoadForm.cshtml" />
+    <Content Include="Views\Shared\_RunLoadForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Analysis\AnalyzeResults.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Home\AnalyzeOutputForm.cshtml" />
+    <Content Include="Views\Analysis\AnalyzeOutput.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Home\_AnalyzeOutputForm.cshtml" />
+    <Content Include="Views\Shared\_AnalyzeOutputForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Configuration\EditConfiguration.cshtml" />

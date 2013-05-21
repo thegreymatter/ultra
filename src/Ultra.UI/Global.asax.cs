@@ -21,7 +21,7 @@ namespace Ultra
 		private Bootstrapper _bootstrapper;
 
 		public static Assembly[] Assemblies = new[] {
-			typeof (HomeController).Assembly,	// Ultra.UI
+			typeof (RunController).Assembly,	// Ultra.UI
 			typeof (JmxRunner).Assembly,		// Ultra.Services
 			typeof (EntityBase).Assembly		// Ultra.Dal
 		};
