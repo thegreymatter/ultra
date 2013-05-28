@@ -85,6 +85,7 @@ namespace Ultra.Services.Jmx
 			loadRun.StartTime = runResults.StartTime;
 			loadRun.EndTime = runResults.EndTime;
 			loadRun.Status = LoadRunStatus.Finished;
+			loadRun.RunOutputFilename = Path.GetFileName(runResults.OutputFilename);
 
 			_storage.SaveOrUpdate(loadRun);
 		}

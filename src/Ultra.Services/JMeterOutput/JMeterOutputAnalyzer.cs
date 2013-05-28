@@ -54,7 +54,8 @@ namespace Ultra.Services.JMeterOutput
 				RunningTime = (int)(overallExecutionTime / 60),
 				StartTime = firstRequestTimestamp.Value,
 				EndTime = timestamp.Value,
-				PVS = (int)(totalViews / overallExecutionTime)
+				PVS = (int)(totalViews / overallExecutionTime),
+				OutputFilename = filename
 			};
 		}
 
@@ -96,6 +97,7 @@ namespace Ultra.Services.JMeterOutput
 	{
 		public IList<ThreadPoolStats> Threads { get; set; }
 
+		public string OutputFilename { get; set; }
 		public int RunningTime { get; set; }
 		public DateTime StartTime { get; set; }
 		public DateTime EndTime { get; set; }
