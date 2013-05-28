@@ -37,12 +37,12 @@
 		</tr>
 		@foreach (var loadRun in Model.Where(x => x.Status == LoadRunStatus.Finished))
 		{
-			<tr data-loadrunid="@loadRun.Id" data-output-file="@loadRun.RunOutputFilename" class="load-run">
+			<tr data-loadrunid="@loadRun.Id" data-output-file="@loadRun.RunOutputFilename" class="load-run load-run-row">
 				<td class="load-run">@loadRun.StartTime.ToShortDateString()</td>
 				<td class="load-run">@loadRun.TotalPvs</td>
 				<td class="load-run">@loadRun.Duration</td>
 				<td class="load-run">@loadRun.RampUp</td>
-				<td class="load-run"><a href="#">Details</a></td>
+				<td class="load-run"><a href="#" class="show-run-details">Details</a></td>
 				<td class="load-run"><a href="#" class="delete">Delete</a></td>
 			</tr>
 			<tr class="load-run-details hidden">

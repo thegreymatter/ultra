@@ -47,4 +47,9 @@
 			detailsRow.addClass('hidden');
 	});
 
+	$('tr.load-run-row .show-run-details').click(function() {
+		var runOutputFile = $(this).parents('.load-run-row').data('output-file');
+		window.location.href = '/show-analysis/' + runOutputFile;
+	});
+
 });
