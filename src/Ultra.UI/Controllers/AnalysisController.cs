@@ -32,7 +32,7 @@ namespace Ultra.Controllers
 		}
 
 		[Route("analyze")]
-		public ActionResult AnalyzeOutput()
+		public ActionResult Analyze()
 		{
 			var outputDirectory = JMeterOutputAnalyzer.JMeterOutputArchive;
 			var outputFiles = Directory.GetFiles(Path.Combine(Server.MapPath("/"), outputDirectory), "*.csv", SearchOption.TopDirectoryOnly);

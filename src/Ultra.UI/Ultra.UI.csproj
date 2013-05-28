@@ -222,7 +222,7 @@
     <Content Include="Views\Analysis\AnalyzeResults.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Analysis\AnalyzeOutput.cshtml" />
+    <Content Include="Views\Analysis\Analyze.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\_AnalyzeOutputForm.cshtml" />
