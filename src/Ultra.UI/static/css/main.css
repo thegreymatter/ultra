@@ -1,5 +1,7 @@
 ﻿* { font-family: helvetica neue, tahoma, arial, sans-serif;line-height: 25px;color: #151515;font-size: 13px; }
 body { width: 1000px;margin: 0 auto; }
+a { color: #1564c2;text-decoration: none; }
+a:hover { text-decoration: underline; }
 
 .float { float: left; }
 .float-right { float: right; }
