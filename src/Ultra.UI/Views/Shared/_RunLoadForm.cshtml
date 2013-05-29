@@ -17,10 +17,14 @@
 <div class="row">
 	<div class="label">Servers:</div>
 	<div class="input servers-list">
-		@foreach (var server in Model.Configuration.Servers)
+		@if (Model.Configuration.Servers != null && Model.Configuration.Servers.Length > 0)
 		{
-			<input type="checkbox" id="server_@server" name="loadrun_servers"/>
-			<label for="server_@server">@server</label><br/>
+			foreach (var server in Model.Configuration.Servers)
+			{
+				<input type="checkbox" id="server_@server" name="loadrun_servers"/>
+				<label for="server_@server">@server</label>
+				<br/>
+			}
 		}
 	</div>
 </div>
