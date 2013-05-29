@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Configuration;
 using System.IO;
 using System.Linq;
@@ -48,6 +49,10 @@ namespace Ultra.Services.JMeterOutput
 			}
 
 			var overallExecutionTime = (maxTimeStamp.Subtract(firstRequestTimestamp.Value)).TotalSeconds;
+
+			if (timestamp == null)
+				throw new RunWasTooShortForAnalysisException(
+					"It seems that you are trying to analyze a file that was running for a short period. RampUp = " + runSettings.RampUp);
 
 			return new RunResults {
 				Threads = _threadPoolStats.Values.ToList(),

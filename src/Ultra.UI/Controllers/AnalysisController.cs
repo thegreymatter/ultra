@@ -2,6 +2,7 @@
 using System.Web.Mvc;
 using Ultra.Config.Routes;
 using Ultra.Dal.Entities;
+using Ultra.Filters;
 using Ultra.Services.JMeterOutput;
 using Ultra.Services.Jmx;
 
@@ -31,6 +32,7 @@ namespace Ultra.Controllers
 			return View(results);
 		}
 
+		
 		[Route("analyze")]
 		public ActionResult Analyze()
 		{
@@ -40,6 +42,7 @@ namespace Ultra.Controllers
 			return View(outputFiles);
 		}
 
+		[ExceptionHandlingFilterAttribute]
 		[Route("-/analyze-output")]
 		public ActionResult AnalyzeOutput(string output_file, string output_domain, int output_duration, int output_rampup)
 		{

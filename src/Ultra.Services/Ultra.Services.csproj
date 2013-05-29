@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="JMeterOutput\AnalysisException.cs" />
     <Compile Include="JMeterOutput\IJMeterOutputAnalyzer.cs" />
     <Compile Include="JMeterOutput\JMeterOutputAnalyzer.cs" />
     <Compile Include="JMeterOutput\ThreadPoolStats.cs" />
