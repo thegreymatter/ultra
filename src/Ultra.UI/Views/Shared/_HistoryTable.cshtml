@@ -1,4 +1,5 @@
-﻿@using Ultra.Dal.Entities
+﻿@using System.Globalization
+@using Ultra.Dal.Entities
 @model LoadRun[]
 @{
 	// TODO: get this from some configuration!
@@ -38,7 +39,7 @@
 		@foreach (var loadRun in Model.Where(x => x.Status == LoadRunStatus.Finished))
 		{
 			<tr data-loadrunid="@loadRun.Id" data-output-file="@loadRun.RunOutputFilename" class="load-run load-run-row">
-				<td class="load-run">@loadRun.StartTime.ToShortDateString()</td>
+				<td class="load-run">@loadRun.StartTime.ToString("f", CultureInfo.CreateSpecificCulture("en-US"))</td>
 				<td class="load-run">@loadRun.TotalPvs</td>
 				<td class="load-run">@loadRun.Duration</td>
 				<td class="load-run">@loadRun.RampUp</td>
