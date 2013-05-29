@@ -27,7 +27,7 @@ namespace Ultra.Dal.Repositories
 
 		public LoadRun[] GetMostRecentLoadRuns(int amount)
 		{
-			var cursor = _loadRunStorage.GetAll().SetSortOrder("StartTime").SetLimit(amount);
+			var cursor = _loadRunStorage.GetAll().SetSortOrder(SortBy.Descending("StartTime")).SetLimit(amount);
 			return cursor.ToArray();
 		}
 
