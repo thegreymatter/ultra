@@ -100,8 +100,9 @@ namespace Ultra.Services.Jmx
 
 			var process = new Process();
 
-			var arguments = string.Format("-Jhostname={0} -Joutputfile={1}.csv -Jrampup={2} -Jduration={3} -n -t {4}",
-				settings.Domain, _runTime, settings.RampUp, settings.Duration, newJmxFilename);
+			var arguments = string.Format("-Jhostname={0} -Joutputfile={1}.csv -Jrampup={2} -Jduration={3} -n -t {4} -R {5}",
+				settings.Domain, _runTime, settings.RampUp, settings.Duration,
+				newJmxFilename, string.Join(",", loadRun.Servers));
 
 			process.StartInfo = new ProcessStartInfo {
 				FileName = JMeterBatFile,
