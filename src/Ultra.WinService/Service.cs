@@ -5,6 +5,7 @@ using System.ServiceProcess;
 using System.Timers;
 using Castle.Windsor;
 using Ultra.Config;
+using Ultra.Dal.Entities;
 using Ultra.Dal.Repositories;
 using Ultra.Services.Jmx;
 
@@ -18,6 +19,7 @@ namespace Ultra.WinService
 
 		private ILoadRunRepository _loadRunRepository;
 		private IJmxRunner _jmxRunner;
+		private UltraConfiguration _configuration;
 
 		public UltraWinService()
 		{
@@ -62,6 +64,9 @@ namespace Ultra.WinService
 		{
 			_loadRunRepository = container.Resolve<ILoadRunRepository>();
 			_jmxRunner = container.Resolve<IJmxRunner>();
+
+			var configurationRepository = container.Resolve<IConfigurationRepository>();
+			_configuration = configurationRepository.GetConfiguration() ?? new UltraConfiguration();
 		}
 
 		private void CheckLoadRunsStatus(object sender, ElapsedEventArgs elapsedEventArgs)
