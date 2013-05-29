@@ -1,6 +1,6 @@
-﻿@model string[]
+﻿@model Ultra.Models.RunPageModel
 @{
-	var jmxFiles = Model;
+	var jmxFiles = Model.JmxFiles;
 }
 <div class="row">
 	<div class="label">Script:</div>
@@ -12,6 +12,16 @@
 				<option value="@jmxScript">@jmxScriptName</option>
 			}
 		</select>
+	</div>
+</div>
+<div class="row">
+	<div class="label">Servers:</div>
+	<div class="input servers-list">
+		@foreach (var server in Model.Configuration.Servers)
+		{
+			<input type="checkbox" id="server_@server" name="loadrun_servers"/>
+			<label for="server_@server">@server</label><br/>
+		}
 	</div>
 </div>
 <div class="row">

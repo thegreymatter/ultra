@@ -11,10 +11,12 @@ namespace Ultra.Controllers
 	public class RunController : Controller
 	{
 		private readonly ILoadRunRepository _loadRunRepository;
+		private readonly IConfigurationRepository _configurationRepository;
 
-		public RunController(ILoadRunRepository loadRunRepository)
+		public RunController(ILoadRunRepository loadRunRepository, IConfigurationRepository configurationRepository)
 		{
 			_loadRunRepository = loadRunRepository;
+			_configurationRepository = configurationRepository;
 		}
 
 		[Route("run")]
@@ -22,18 +24,22 @@ namespace Ultra.Controllers
 		{
 			var jmxFileDirectory = ConfigurationManager.AppSettings["JmxScripts"];
 			var jmxFiles = Directory.GetFiles(Path.Combine(Server.MapPath("/"), jmxFileDirectory), "*.jmx", SearchOption.TopDirectoryOnly);
+			var configuration = _configurationRepository.GetConfiguration();
 
 			var loadRuns = _loadRunRepository.GetMostRecentLoadRuns(10);
 
 			return View(new RunPageModel {
-				JmxFiles = jmxFiles, LoadRuns = loadRuns
+				JmxFiles = jmxFiles, 
+				LoadRuns = loadRuns,
+				Configuration = configuration
 			});
 		}
 
 		[Route("-/start-run")]
-		public ActionResult StartRun(string filename, JmxSettings settings)
+		public ActionResult StartRun(string filename, JmxSettings settings, string[] servers)
 		{
 			_loadRunRepository.CreateLoadRun(new LoadRun {
+				Servers = servers,
 				Domain = settings.Domain,
 				Duration = settings.Duration,
 				JmxFilename = filename,

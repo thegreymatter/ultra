@@ -7,5 +7,6 @@ namespace Ultra.Models
 	{
 		public string[] JmxFiles { get; set; }
 		public LoadRun[] LoadRuns { get; set; }
+		public UltraConfiguration Configuration { get; set; }
 	}
 }

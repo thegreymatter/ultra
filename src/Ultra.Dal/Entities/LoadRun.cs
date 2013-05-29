@@ -12,6 +12,7 @@ namespace Ultra.Dal.Entities
 
 		// TODO: maybe we should put this in a 'settings' sub-document
 		public string JmxFilename { get; set; }
+		public string[] Servers { get; set; }
 		public string Domain { get; set; }
 		public int Duration { get; set; }
 		public int RampUp { get; set; }

@@ -2,14 +2,24 @@
 
 	$('#start-load-run').click(function() {
 		// TODO: add basic validation
+
+		var servers = [];
+		$('.servers-list input').each(function(index, element) {
+			var serverCheckbox = $(element);
+			if (serverCheckbox.prop('checked'))
+				servers.push(serverCheckbox.attr('id').replace('server_',''));
+		});
+
 		$.ajax({
 			url: '/-/start-run',
 			type: 'POST',
+			traditional: true,
 			data: {
 				filename: $('#loadrun_script').val(),
 				domain: $('#loadrun_domain').val(),
 				duration: $('#loadrun_duration').val(),
-				rampup: $('#loadrun_rampup').val()
+				rampup: $('#loadrun_rampup').val(),
+				servers: servers
 			},
 			success: function() {
 				$('.running-load').show();
