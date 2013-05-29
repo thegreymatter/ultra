@@ -9,6 +9,15 @@
 		@RenderSection("Head", required: false)
     </head>
 	<body>
+		<div class="header">
+			<div class="container">
+				<ul class="menu">
+					<li class="first"><a href="/">History</a></li>
+					<li><a href="/run">Create Run</a></li>
+					<li><a href="/edit-configuration">Configuration</a></li>
+				</ul>
+			</div>
+		</div>
 		<div class="container">
 			@RenderBody()
 		</div>
