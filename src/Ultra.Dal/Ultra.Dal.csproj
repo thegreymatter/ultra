@@ -55,7 +55,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entities\Configuration.cs" />
+    <Compile Include="Entities\UltraConfiguration.cs" />
     <Compile Include="Entities\EntityBase.cs" />
     <Compile Include="Entities\JmxSettings.cs" />
     <Compile Include="Plumbing\PersistenceAttribute.cs" />

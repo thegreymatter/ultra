@@ -15,38 +15,38 @@
 
 	<div class="row">
 		<div class="label">Servers:</div>
-		<div class="input"><input class="large" type="text" id="servers" value="@Model.Servers"></div>
+		<div class="input"><input class="large" type="text" id="servers" name="servers" value="@string.Join(", ", Model.Servers)"></div>
 	</div>
 	<div class="row">
 		<div class="label">JMeter batch file:</div>
-		<div class="input"><input class="large" type="text" id="jMeterBatFile" value="@Model.JMeterBatFile"/></div>
+		<div class="input"><input class="large" type="text" id="jMeterBatFile" name="jMeterBatFile" value="@Model.JMeterBatFile"/></div>
 	</div>
 	<div class="row">
 		<div class="label">Jmx scripts directory:</div>
-		<div class="input"><input class="large" type="text" id="jmxScripts" value="@Model.JmxScripts"/></div>
+		<div class="input"><input class="large" type="text" id="jmxScripts" name="jmxScripts" value="@Model.JmxScripts"/></div>
 	</div>
 	<div class="row">
 		<div class="label">Jmx file archive:</div>
-		<div class="input"><input class="large" type="text" id="jmxFileArchive" value="@Model.JmxFileArchive"/></div>
+		<div class="input"><input class="large" type="text" id="jmxFileArchive" name="jmxFileArchive" value="@Model.JmxFileArchive"/></div>
 	</div>
 	<div class="row">
 		<div class="label">Output archive:</div>
-		<div class="input"><input class="large" type="text" id="outputArchive" value="@Model.OutputArchive"/></div>
+		<div class="input"><input class="large" type="text" id="outputArchive" name="outputArchive" value="@Model.OutputArchive"/></div>
 	</div>
 
 	<h2>Default run settings</h2>
 
 	<div class="row">
 		<div class="label">Domain:</div>
-		<div class="input"><input class="large" type="text" id="defaultDomain" value="@Model.DefaultSettings.Domain"/></div>
+		<div class="input"><input class="large" type="text" id="defaultDomain" name="defaultSettings.domain" value="@Model.DefaultSettings.Domain"/></div>
 	</div>
 	<div class="row">
 		<div class="label">Duration:</div>
-		<div class="input"><input class="small" type="text" id="defaultDuration" value="@Model.DefaultSettings.Duration"/> sec</div>
+		<div class="input"><input class="small" type="text" id="defaultDuration" name="defaultSettings.duration" value="@Model.DefaultSettings.Duration"/> sec</div>
 	</div>
 	<div class="row">
 		<div class="label">Rampup:</div>
-		<div class="input"><input class="small" type="text" id="defaultRampup" value="@Model.DefaultSettings.RampUp"/> sec</div>
+		<div class="input"><input class="small" type="text" id="defaultRampup" name="defaultSettings.rampUp" value="@Model.DefaultSettings.RampUp"/> sec</div>
 	</div>
 
 	<div class="row actions">

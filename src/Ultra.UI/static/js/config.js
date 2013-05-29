@@ -1,7 +1,8 @@
 ﻿$(function() {
 
 	$('#save-config').click(function() {
-		$.post('/-/save-configuration', $('#edit-configuration-form').serialize());
+		var form = $('#edit-configuration-form');
+		$.post('/-/save-configuration', form.serialize());
 	});
 
 });

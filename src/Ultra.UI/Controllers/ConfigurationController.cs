@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System.Linq;
+using System.Web.Mvc;
 using Ultra.Config.Routes;
 using Ultra.Dal.Entities;
 using Ultra.Dal.Repositories;
@@ -25,6 +26,7 @@ namespace Ultra.Controllers
 		[Route("-/save-configuration")]
 		public ActionResult SaveConfiguration(UltraConfiguration configuration)
 		{
+			configuration.Servers = configuration.Servers[0].Split(',').Select(x => x.Trim()).ToArray();
 			_configurationRepository.SaveConfiguration(configuration);
 
 			return Json("OK");

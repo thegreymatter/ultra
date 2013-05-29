@@ -72,7 +72,6 @@ namespace Ultra.WinService
 				var pendingLoadRuns = _loadRunRepository.GetPendingLoadRuns();
 				if (pendingLoadRuns.Any())
 				{
-					// TODO: currently knows how to handle 1 load run at a time
 					var loadRun = pendingLoadRuns.Last();
 					_jmxRunner.Run(loadRun.Id);
 				}
