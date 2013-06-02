@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using Castle.Windsor;
 using Ultra.Config;
 using Ultra.Dal.Entities;
@@ -53,6 +54,7 @@ namespace Ultra.Util
 			// TODO: output run info...
 
 			loadRunRepository.CreateLoadRun(new LoadRun {
+				Servers = parsedArguments.KeyValues["servers"].Split(',').Select(x => x.Trim()).ToArray(),
 				Domain = jmxSettings.Domain,
 				Duration = jmxSettings.Duration,
 				JmxFilename = _filename,
