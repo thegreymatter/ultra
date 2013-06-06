@@ -15,6 +15,8 @@ namespace Ultra.Services.JMeterOutput
 
 		public static string JMeterOutputArchive = ConfigurationManager.AppSettings["OutputArchive"];
 
+		private static Dictionary<string, int> OutputFileMapper;
+
 		public RunResults Analyze(string filename, JmxSettings runSettings)
 		{
 			var totalViews = 0;
@@ -25,7 +27,7 @@ namespace Ultra.Services.JMeterOutput
 
 			using (var fileStream = new StreamReader(filename))
 			{
-				fileStream.ReadLine(); //throw away first line (field names)
+				MapOutputFileFields(fileStream.ReadLine());
 
 				string line;
 				while ((line = fileStream.ReadLine()) != null)
@@ -64,6 +66,16 @@ namespace Ultra.Services.JMeterOutput
 			};
 		}
 
+		private void MapOutputFileFields(string fieldsLine)
+		{
+			var fields = fieldsLine.Split(',').ToArray();
+
+			for (int i = 0; i < fields.Length; i++)
+			{
+				OutputFileMapper.Add(fields[i].ToLower(), i);
+			}
+		}
+
 		private void AddParsedDataToStats(ParsedSet data, bool isAjax)
 		{
 			var threadPoolName = data.ThreadPoolName;
@@ -83,17 +95,15 @@ namespace Ultra.Services.JMeterOutput
 
 		private static ParsedSet ParseLine(string line)
 		{
-			// TODO: add dynamic mapper here, so it won't matter what format the columns are in
-
 			var fields = line.Split(',');
 
 			return new ParsedSet
 			{
-				TimeStamp = DateTime.Parse(fields[0]),
-				Elapsed = Convert.ToInt32(fields[1]),
-				ThreadPoolName = fields[2],
-				ResponseCode = fields[3],
-				Url = fields[10]
+				TimeStamp = DateTime.Parse(fields[OutputFileMapper["timestamp"]]),
+				Elapsed = Convert.ToInt32(fields[OutputFileMapper["elapsed"]]),
+				ThreadPoolName = fields[OutputFileMapper["threadpoolname"]],
+				ResponseCode = fields[OutputFileMapper["responsecode"]],
+				Url = fields[OutputFileMapper["url"]]
 			};
 		}
 	}
