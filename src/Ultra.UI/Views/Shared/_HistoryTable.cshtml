@@ -8,12 +8,14 @@
 	const int percentWarning = 1;
 	const int percentCritical = 2;
 
-	Func<int, string> figureClass = x => {
+	Func<int, string> figureClass = x =>
+	{
 		if (x < warning) return "";
 		if (x < critical) return "warning";
 		return "critical";
 	};
-	Func<double, string> figurePercentClass = x => {
+	Func<double, string> figurePercentClass = x =>
+	{
 		if (x < percentWarning) return "";
 		if (x < percentCritical) return "warning";
 		return "critical";
@@ -33,14 +35,16 @@
 		</tr>
 		<tr class="running-load @(Model.Any(x => x.Status != LoadRunStatus.Finished) ? "" : "hidden")">
 			<td colspan="6">
-				<img src="~/static/img/loader_green.gif" class="loader"/>
+				<img src="~/static/img/loader_green.gif" class="loader" />
 				<i>Currently running load...</i>
 			</td>
 		</tr>
 		@foreach (var loadRun in Model.Where(x => x.Status == LoadRunStatus.Finished))
-		{
+  {
 			<tr data-loadrunid="@loadRun.Id" data-output-file="@loadRun.RunOutputFilename" class="load-run load-run-row">
-			<td  class="load-run"><div class="runlabel">@loadRun.Label</div></td>
+				<td class="load-run">
+					<div class="runlabel">@loadRun.Label</div>
+				</td>
 				<td class="load-run">@loadRun.StartTime.ToString("f", CultureInfo.CreateSpecificCulture("en-US"))</td>
 				<td class="load-run">@loadRun.TotalPvs</td>
 				<td class="load-run">@loadRun.Duration</td>
@@ -48,11 +52,10 @@
 				<td class="load-run"><a href="#" class="show-run-details">Details</a></td>
 				<td class="load-run"><a href="#" class="delete">Delete</a></td>
 			</tr>
-			<tr class="load-run-details hidden">
-				
+			<tr class="load-run-details hidden"  data-loadrunid="@loadRun.Id" >
+
 				<td colspan="7">
-					<div id="distribution_pie" class="float-right">
-					</div>
+					<div id="distribution_pie" class="float-right"></div>
 					<table border="0" cellpadding="0" cellspacing="0" class="run-details">
 						<tr>
 							<td>Thread</td>
@@ -62,21 +65,26 @@
 							<td class="value-title">%err</td>
 						</tr>
 						@if (loadRun.PageMetrics != null)
-						{
-							foreach (var threadGroup in loadRun.PageMetrics)
-							{
-								<tr>
-									<td>@string.Format("{0:0.00}", threadGroup.PageName)</td>
-									<td class="value @figureClass(threadGroup.AverageResponseTime)">@string.Format("{0:0.00}", threadGroup.AverageResponseTime)</td>
-									<td class="value @figureClass(threadGroup.Percentile90)">@string.Format("{0:0.00}", threadGroup.Percentile90)</td>
-									<td class="value @figurePercentClass(threadGroup.PercentOverThreshold)">@string.Format("{0:0.00}", threadGroup.PercentOverThreshold)</td>
-									<td class="value @figurePercentClass(threadGroup.ErrorRate)">@string.Format("{0:0.00}", threadGroup.ErrorRate)</td>
-								</tr>
-							}
-						}
+	  {
+		  foreach (var threadGroup in loadRun.PageMetrics)
+		  {
+							<tr>
+								<td>@string.Format("{0:0.00}", threadGroup.PageName)</td>
+								<td class="value @figureClass(threadGroup.AverageResponseTime)">@string.Format("{0:0.00}", threadGroup.AverageResponseTime)</td>
+								<td class="value @figureClass(threadGroup.Percentile90)">@string.Format("{0:0.00}", threadGroup.Percentile90)</td>
+								<td class="value @figurePercentClass(threadGroup.PercentOverThreshold)">@string.Format("{0:0.00}", threadGroup.PercentOverThreshold)</td>
+								<td class="value @figurePercentClass(threadGroup.ErrorRate)">@string.Format("{0:0.00}", threadGroup.ErrorRate)</td>
+							</tr>
+		  }
+	  }
 					</table>
+					<div>
+						<h2>Remarks</h2>
+					
+					</div>
+						<div class="runremarks">@loadRun.Remarks</div>
 				</td>
 			</tr>
-		}
+  }
 	</tbody>
 </table>

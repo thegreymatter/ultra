@@ -45,5 +45,17 @@ namespace Ultra.Controllers
 
 			return Json("OK");
 		}
+
+		[Route("-/save-remark")]
+		public ActionResult SaveRemark(string loadRunId, string newRemark)
+		{
+			// TODO: remove the files as well
+			var runId = ObjectId.Parse(loadRunId);
+			var run = _loadRunRepository.GetLoadRun(runId);
+			run.Remarks = newRemark;
+			_loadRunRepository.SaveOrUpdate(run);
+
+			return Json("OK");
+		}
 	}
 }

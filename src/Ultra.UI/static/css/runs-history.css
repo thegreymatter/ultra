@@ -11,3 +11,7 @@
 #load-runs-history .run-details td.value { padding: 0 18px; }
 #load-runs-history .run-details td.value.warning { background-color: #fff17e; }
 #load-runs-history .run-details td.value.critical { background-color: #ff9c7e; }
+
+textarea {width: 99%}
+input {width: 99%}
+.runremarks { margin: 20px; min-height: 60px}

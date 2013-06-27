@@ -76,7 +76,28 @@
 		});
 		return (value);
 	}, {
-		submit: 'OK',
+		submit: 'Save',
+	});
+	
+	$('div.runremarks').editable(function (value, settings) {
+		var id = $(this).parents('tr').data('loadrunid');
+		$.ajax({
+			url: '/-/save-remark',
+			type: 'POST',
+			data: { newRemark: value, loadRunId: id },
+			success: function () {
+
+			},
+			error: function () {
+
+			}
+		});
+		return (value);
+	}, {
+		submit: 'Save',
+		type: 'textarea',
+		rows: 5,
+		placeholder:'Click to enter remarks'
 	});
 
 	$('tr.load-run-row .show-run-details').click(function () {

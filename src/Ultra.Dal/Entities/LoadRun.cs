@@ -20,6 +20,7 @@ namespace Ultra.Dal.Entities
 		public string Label { get; set; }
 		public double TotalPvs { get; set; }
 		public PageMetric[] PageMetrics { get; set; }
+		public string Remarks { get; set; }
 	}
 
 	public enum LoadRunStatus
