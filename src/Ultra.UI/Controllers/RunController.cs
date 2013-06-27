@@ -26,7 +26,7 @@ namespace Ultra.Controllers
 			var jmxFiles = Directory.GetFiles(Path.Combine(Server.MapPath("/"), jmxFileDirectory), "*.jmx", SearchOption.TopDirectoryOnly);
 			var configuration = _configurationRepository.GetConfiguration();
 
-			var loadRuns = _loadRunRepository.GetMostRecentLoadRuns(10);
+			var loadRuns = _loadRunRepository.GetMostRecentLoadRuns(10,0);
 
 			return View(new RunPageModel {
 				JmxFiles = jmxFiles, 

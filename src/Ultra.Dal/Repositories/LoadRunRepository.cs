@@ -8,12 +8,13 @@ namespace Ultra.Dal.Repositories
 {
 	public interface ILoadRunRepository
 	{
-		LoadRun[] GetMostRecentLoadRuns(int amount);
+		LoadRun[] GetMostRecentLoadRuns(int amount,int skip);
 		LoadRun GetLoadRun(ObjectId loadRunId);
 		LoadRun[] GetPendingLoadRuns();
 		void CreateLoadRun(LoadRun loadRun);
 		void DeleteLoadRun(ObjectId loadRunId);
 		void SaveOrUpdate(LoadRun loadRun);
+		LoadRun GetLoadRunByOutPutFilename(string filename);
 	}
 
 	public class LoadRunRepository : ILoadRunRepository
@@ -25,15 +26,21 @@ namespace Ultra.Dal.Repositories
 			_loadRunStorage = loadRunStorage;
 		}
 
-		public LoadRun[] GetMostRecentLoadRuns(int amount)
+		public LoadRun[] GetMostRecentLoadRuns(int amount,int skip)
 		{
-			var cursor = _loadRunStorage.GetAll().SetSortOrder(SortBy.Descending("StartTime")).SetLimit(amount);
+			var cursor = _loadRunStorage.GetAll().SetSortOrder(SortBy.Descending("StartTime")).SetLimit(amount).SetSkip(skip);
 			return cursor.ToArray();
 		}
 
 		public LoadRun GetLoadRun(ObjectId loadRunId)
 		{
 			return _loadRunStorage.GetById(loadRunId);
+		}
+
+		public LoadRun GetLoadRunByOutPutFilename(string filename)
+		{
+			var query = Query<LoadRun>.EQ(x => x.RunOutputFilename, filename);
+			return _loadRunStorage.RunQuery(query).FirstOrDefault();
 		}
 
 		public LoadRun[] GetPendingLoadRuns()

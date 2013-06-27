@@ -3,17 +3,12 @@
 	var outputFiles = Model;
 }
 
-<form method="POST" action="/-/analyze-output" enctype="multipart/form-data" id="analyze-output-form">
+@using (Html.BeginForm("AnalyzeOutput", "Analysis", FormMethod.Post, new {enctype = "multipart/form-data",id="submitform"}))
+  {
 	<div class="row">
 		<div class="label">Output file:</div>
 		<div class="input">
-			<select class="large" id="output_file" name="output_file">
-			@foreach (var outputFile in outputFiles)
-			{
-				var outputFilename = outputFile.Substring(outputFile.LastIndexOf('\\') + 1);
-				<option value="@outputFile">@outputFilename</option>
-			}
-		</select>
+			<input type="file" id="output_file_upload" name="output_file_upload" runat="server" />
 		</div>
 	</div>
 	<div class="row">
@@ -29,6 +24,6 @@
 		<div class="input"><input class="small" type="text" id="output_rampup" name="output_rampup" value="150"/> sec</div>
 	</div>
 	<div class="row actions">
-		<input type="button" id="analyze-output" class="btn btn_primary" value="Analyze"/>
+		<input type="submit" id="analyze-output" class="btn btn_primary" value="Analyze"/>
 	</div>
-</form>
+}

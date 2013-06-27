@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using Castle.Windsor;
 using Ultra.Config;
@@ -16,44 +18,96 @@ namespace Ultra.Util
 		private static IWindsorContainer _container;
 		private static string _filename;
 		private static readonly Stopwatch Watch = new Stopwatch();
+		private static string _directory;
 
 		static void Main(string[] args)
 		{
+
 			Console.WriteLine("Starting to initialize utility...");
 			Bootstrap();
 
 			var runner = _container.Resolve<IJmxRunner>();
 			var loadRunRepository = _container.Resolve<ILoadRunRepository>();
-
+			var blackListRepository = _container.Resolve<IBlackListRepository>();
 			var parser = new ArgumentParser();
 			var parsedArguments = parser.ParseArguments(args);
 			DisplayStartMessage(parsedArguments);
 
 			// TODO: output parameters and run info
 
-			_filename = parsedArguments.KeyValues["filename"];
-			var jmxSettings = new JmxSettings {
-				Domain = parsedArguments.KeyValues["domain"],
-				Duration = int.Parse(parsedArguments.KeyValues["duration"]),
-				RampUp = int.Parse(parsedArguments.KeyValues["rampup"])
-			};
+			_filename =   parsedArguments.KeyValues.ContainsKey("filename")?parsedArguments.KeyValues["filename"]:null;
+			_directory = parsedArguments.KeyValues.ContainsKey("directory") ? parsedArguments.KeyValues["directory"] : null;
+
+			var jmxSettings = new JmxSettings
+								  {
+									  Domain = parsedArguments.KeyValues["domain"],
+									  Duration = int.Parse(parsedArguments.KeyValues["duration"]),
+									  RampUp = int.Parse(parsedArguments.KeyValues["rampup"])
+
+								  };
 
 			if (parsedArguments.Flags.Contains("analyze"))
 			{
-				var results = new JMeterOutputAnalyzer().Analyze(_filename, jmxSettings);
-				runner.PersistRunResults(results, true);
+				if (_filename != null)
+				{
+					using (var reader = new StreamReader(_filename))
+					{
 
-				DisplayEndMessage();
+						var results = new JMeterOutputAnalyzer(blackListRepository).Analyze(_filename, jmxSettings);
+						runner.PersistRunResults(results, true);
+						
+						DisplayEndMessage();
 
-				if (parsedArguments.Flags.Contains("wait"))
-					Console.ReadKey();
+						if (parsedArguments.Flags.Contains("wait"))
+							Console.ReadKey();
 
-				return;
+						return;
+					}
+				}
+				if (_directory != null)
+				{
+
+					foreach (var csvFile in Directory.GetFiles(_directory,"*.csv"))
+					{
+						try
+						{
+
+
+						using (var reader = new StreamReader(csvFile))
+						{
+							if (loadRunRepository.GetLoadRunByOutPutFilename(Path.GetFileName(csvFile)) != null)
+							{
+								Console.WriteLine("Ignored {0}", csvFile);
+								continue;
+							}
+							var results = new JMeterOutputAnalyzer(blackListRepository).Analyze(csvFile, jmxSettings);
+							var destPath = Path.Combine(JMeterOutputAnalyzer.JMeterOutputArchive, Path.GetFileName(csvFile));
+							runner.PersistRunResults(results, true);
+							if (!File.Exists(destPath))
+							{
+								File.Copy(csvFile, destPath);
+							}
+							Console.WriteLine("Parsed {0}",csvFile);
+						}
+						}
+						catch (Exception ex)
+						{
+							Console.WriteLine("Error {0}", csvFile);
+							Console.WriteLine(ex.Message);
+						}
+					}
+					DisplayEndMessage();
+
+					if (parsedArguments.Flags.Contains("wait"))
+						Console.ReadKey();
+					return;
+				}
 			}
 
 			// TODO: output run info...
 
-			loadRunRepository.CreateLoadRun(new LoadRun {
+			loadRunRepository.CreateLoadRun(new LoadRun
+			{
 				Servers = parsedArguments.KeyValues["servers"].Split(',').Select(x => x.Trim()).ToArray(),
 				Domain = jmxSettings.Domain,
 				Duration = jmxSettings.Duration,

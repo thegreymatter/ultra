@@ -10,7 +10,7 @@
 	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 }
 
-<h2>Load Analysis</h2>
+<h2>Load Analysis </h2>
 
 <div id="general_stats">
 	<div class="stat-container float">
@@ -32,10 +32,10 @@
 	<div id="distribution_pie" class="float"></div>
 	<div class="historgram-area float">
 		<div id="percentile_histogram"></div>
-		@foreach (var threadGroup in Model.Threads)
+@*		@foreach (var threadGroup in Model.Threads)
 		{
 			<a href="#" class="show-percentile" data-threadgroup="@threadGroup.GetThreadPoolName()">@threadGroup.GetThreadPoolName()</a>@:, 
-		}
+		}*@
 	</div>
 </div>
 
@@ -81,34 +81,48 @@
 
 		var options = {
 			'title': 'Requests Distribution',
-			'legend': 'none',
-			'width':300,
-			'height':300};
+			'legend': { position: 'left', textStyle: { color: 'blue', fontSize: 10 } },
+			
+			'width':600,
+			'height':450};
 
-		var chart = new google.visualization.PieChart(document.getElementById('distribution_pie'));
-		chart.draw(data, options);
+		var distributionChart = new google.visualization.PieChart(document.getElementById('distribution_pie'));
+		distributionChart.draw(data, options);
+		google.visualization.events.addListener(distributionChart, 'select', function() {
+
+			var selection = (distributionChart.getSelection())[0];
+			var name = threads_percentile[selection.row]['name'];
+			var newData = null;
+			for (var i = 0; i < threads_percentile.length; i++)
+				if (threads_percentile[i]['name'] == name)
+					newData = threads_percentile[i];
+			for (var i = 0; i < 9; i++)
+				percentileData.setValue(i, 1, newData['percentiles'][i][1]);
+			percentileChart.draw(percentileData, percentileOptions);
+		});
 	}
 	
 	function drawPercentileHistogram() {
 
-		var data = new google.visualization.DataTable();
-		data.addColumn('string', 'Percentile');
-		data.addColumn('number', 'Time');
-		data.addRows(threads_percentile[0]['percentiles']);
+		percentileData = new google.visualization.DataTable();
+		percentileData.addColumn('string', 'Percentile');
+		percentileData.addColumn('number', 'Time');
+		percentileData.addRows(threads_percentile[0]['percentiles']);
 
-		var options = {
+		percentileOptions = {
 			title: 'Percentiles',
-			width: 600,
-			height: 300,
+			width: 500,
+			height: 400,
 			legend: 'none',
+			chartArea:{height:"55%"},
 			bar: { groupWidth: '98%' },
 			animation: {
 				duration: 750, easing: 'out'
 			}
 		};
 
-		var chart = new google.visualization.ColumnChart(document.getElementById('percentile_histogram'));
-		chart.draw(data, options);
+		percentileChart = new google.visualization.ColumnChart(document.getElementById('percentile_histogram'));
+		percentileChart.draw(percentileData, percentileOptions);
 
 		$('.show-percentile').click(function() {
 			var newData = null;
@@ -116,8 +130,8 @@
 				if (threads_percentile[i]['name'] == $(this).data('threadgroup'))
 					newData = threads_percentile[i];
 			for (var i = 0; i < 9; i++)
-				data.setValue(i, 1, newData['percentiles'][i][1]);
-			chart.draw(data, options);
+				percentileData.setValue(i, 1, newData['percentiles'][i][1]);
+			percentileChart.draw(data, percentileOptions);
 		});
 	}
 </script>

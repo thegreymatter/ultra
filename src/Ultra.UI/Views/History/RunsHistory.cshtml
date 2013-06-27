@@ -1,17 +1,27 @@
 ﻿@model Ultra.Dal.Entities.LoadRun[]
 @{
 	Layout = "~/Views/Shared/_Layout.cshtml";
-    ViewBag.Title = "Home Page";
+	ViewBag.Title = "Home Page";
 }
 @section Head
 {
+	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 	<script type="text/javascript" src="~/static/js/load-run.js"></script>
+	<script type="text/javascript" src="~/Scripts/jquery.jeditable.js"></script>
+
 	<link type="text/css" rel="stylesheet" href="../../static/css/runs-history.css">
 }
 
 <div class="title">
-	<h2>History</h2>
+	<h2>History  </h2>
 	<span class="float-right add-output-file"><a href="/analyze">Add Output File</a></span>
 </div>
 
+<script type="text/javascript">
+	google.load('visualization', '1.0', { 'packages': ['corechart'] });
+</script>
+
 @Html.Partial("_HistoryTable", Model)
+@Html.ActionLink("Prev Page", "RunsHistory", new { skip = Math.Max(0, Request["skip"].AsInt() - 10) })
+<span>Page @(Request["skip"].AsInt() / 10)</span>
+@Html.ActionLink("Next Page", "RunsHistory", new { skip = Request["skip"].AsInt() + 10 })

@@ -17,7 +17,7 @@ namespace Ultra.Dal.Entities
 		public int Duration { get; set; }
 		public int RampUp { get; set; }
 		public string RunOutputFilename { get; set; }
-
+		public string Label { get; set; }
 		public double TotalPvs { get; set; }
 		public PageMetric[] PageMetrics { get; set; }
 	}

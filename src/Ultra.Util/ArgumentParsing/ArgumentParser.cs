@@ -5,7 +5,7 @@ namespace Ultra.Util.ArgumentParsing
 {
 	public class ArgumentParser
 	{
-		private readonly string[] _validKeyValues = new[] {"--filename", "--duration", "--rampup", "--domain", "--servers"};
+		private readonly string[] _validKeyValues = new[] { "--filename", "--duration", "--rampup", "--domain", "--servers", "--directory" };
 		private readonly string[] _validFlags = new[] {"--analyze", "--wait"};
 
 		public UtilArguments ParseArguments(string[] args)

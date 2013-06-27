@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
 using MongoDB.Bson;
 using Ultra.Config.Routes;
 using Ultra.Dal.Repositories;
@@ -15,9 +16,10 @@ namespace Ultra.Controllers
 		}
 
 		[Route("")]
-		public ActionResult RunsHistory()
+		public ActionResult RunsHistory(int skip = 0)
 		{
-			var loadRuns = _loadRunRepository.GetMostRecentLoadRuns(10);
+			skip = Math.Max(0, skip);
+			var loadRuns = _loadRunRepository.GetMostRecentLoadRuns(10,skip);
 
 			return View(loadRuns);
 		}
@@ -28,6 +30,18 @@ namespace Ultra.Controllers
 			// TODO: remove the files as well
 			var runId = ObjectId.Parse(loadRunId);
 			_loadRunRepository.DeleteLoadRun(runId);
+
+			return Json("OK");
+		}
+
+		[Route("-/save-label")]
+		public ActionResult SaveLabel(string loadRunId,string newLabel)
+		{
+			// TODO: remove the files as well
+			var runId = ObjectId.Parse(loadRunId);
+			var run = _loadRunRepository.GetLoadRun(runId);
+			run.Label = newLabel;
+			_loadRunRepository.SaveOrUpdate(run);
 
 			return Json("OK");
 		}

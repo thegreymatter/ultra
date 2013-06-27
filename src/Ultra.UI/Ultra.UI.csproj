@@ -167,7 +167,11 @@
     <Content Include="Global.asax" />
     <Content Include="jmx\RealWorld.jmx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
+    <Content Include="Scripts\jquery.form.js" />
+    <Content Include="Scripts\jquery.form.min.js" />
+    <Content Include="Scripts\jquery.jeditable.js" />
     <Content Include="static\css\runs-analysis.css" />
     <Content Include="static\css\runs-history.css" />
     <Content Include="static\css\main.css" />
@@ -191,7 +195,6 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>

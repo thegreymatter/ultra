@@ -4,7 +4,9 @@ using System.ComponentModel;
 using System.Configuration;
 using System.IO;
 using System.Linq;
+
 using Ultra.Dal.Entities;
+using Ultra.Dal.Repositories;
 
 namespace Ultra.Services.JMeterOutput
 {
@@ -13,24 +15,37 @@ namespace Ultra.Services.JMeterOutput
 		private readonly Dictionary<string, ThreadPoolStats> _threadPoolStats = new Dictionary<string, ThreadPoolStats>();
 		private readonly int _elapsedThreshold = int.Parse(ConfigurationManager.AppSettings["ResponseTimeThreshold"]);
 
+		public readonly ISet<string> _blacklist;
 		public static string JMeterOutputArchive = ConfigurationManager.AppSettings["OutputArchive"];
 
-		private static Dictionary<string, int> OutputFileMapper;
+		private  Dictionary<string, int> OutputFileMapper;
 
+		public JMeterOutputAnalyzer(IBlackListRepository blacklist)
+		{
+			_blacklist = blacklist.GetBlackList();
+		}
+
+		public JMeterOutputAnalyzer()
+		{
+			_blacklist  = new HashSet<string>();
+		}
 		public RunResults Analyze(string filename, JmxSettings runSettings)
 		{
+			
 			var totalViews = 0;
 			var minTimeStamp = DateTime.MaxValue;
 			var maxTimeStamp = DateTime.MinValue;
 			DateTime? firstRequestTimestamp = null;
 			DateTime? timestamp = null;
-
-			using (var fileStream = new StreamReader(filename))
+			OutputFileMapper = new Dictionary<string, int>();
+			using (var filestream = new StreamReader(filename))
 			{
-				MapOutputFileFields(fileStream.ReadLine());
+
+
+				MapOutputFileFields(filestream.ReadLine());
 
 				string line;
-				while ((line = fileStream.ReadLine()) != null)
+				while ((line = filestream.ReadLine()) != null)
 				{
 					var parsedSet = ParseLine(line);
 
@@ -41,15 +56,14 @@ namespace Ultra.Services.JMeterOutput
 						continue;
 
 					if (!parsedSet.IsAjax()) ++totalViews;
-
+					if (_blacklist.Contains(parsedSet.ThreadPoolName))
+						continue;
 					AddParsedDataToStats(parsedSet, parsedSet.IsAjax());
 					timestamp = parsedSet.TimeStamp;
 					if (timestamp < minTimeStamp) minTimeStamp = timestamp.Value;
 					if (timestamp > maxTimeStamp) maxTimeStamp = timestamp.Value;
 				}
-				fileStream.Close();
 			}
-
 			var overallExecutionTime = (maxTimeStamp.Subtract(firstRequestTimestamp.Value)).TotalSeconds;
 
 			if (timestamp == null)
@@ -62,7 +76,7 @@ namespace Ultra.Services.JMeterOutput
 				StartTime = firstRequestTimestamp.Value,
 				EndTime = timestamp.Value,
 				PVS = (int)(totalViews / overallExecutionTime),
-				OutputFilename = filename
+				OutputFilename = Path.GetFileName(filename)
 			};
 		}
 
@@ -80,6 +94,7 @@ namespace Ultra.Services.JMeterOutput
 		{
 			var threadPoolName = data.ThreadPoolName;
 			ThreadPoolStats stats;
+			
 			if (!_threadPoolStats.ContainsKey(threadPoolName))
 			{
 				stats = new ThreadPoolStats(threadPoolName, isAjax);
@@ -93,7 +108,7 @@ namespace Ultra.Services.JMeterOutput
 		}
 
 
-		private static ParsedSet ParseLine(string line)
+		private  ParsedSet ParseLine(string line)
 		{
 			var fields = line.Split(',');
 
@@ -101,12 +116,15 @@ namespace Ultra.Services.JMeterOutput
 			{
 				TimeStamp = DateTime.Parse(fields[OutputFileMapper["timestamp"]]),
 				Elapsed = Convert.ToInt32(fields[OutputFileMapper["elapsed"]]),
-				ThreadPoolName = fields[OutputFileMapper["threadpoolname"]],
+				ThreadPoolName = fields[OutputFileMapper["label"]],
 				ResponseCode = fields[OutputFileMapper["responsecode"]],
 				Url = fields[OutputFileMapper["url"]]
 			};
 		}
 	}
+
+	
+
 
 	public struct RunResults
 	{

@@ -1,19 +1,21 @@
-﻿$(function() {
+﻿$(function () {
 
-	$('#analyze-output').click(function(result) {
-		// TODO: add basic validation
-		var analyzeForm = $('#analyze-output-form');
-		$.post(analyzeForm[0].action, analyzeForm.serialize())
-			.success(function() {
-				window.location.href = '/';
-			})
-			.fail(function(ex) {
+	$(document).ready(function () {
+		// bind 'myForm' and provide a simple callback function 
+		var options = {
+			success: function () { window.location.href = "/"; },
+			error: function (ex) {
+				
 				if (ex.responseText) {
 					var error = JSON.parse(ex.responseText);
 					if (error && error.Error && error.Error.Message)
-						alert(error.Error.Message);
+						alert("Error occured while submitting report. \nDetails: "+error.Error.Message);
 				}
-			});
+			}
+		};
+
+
+		$('#submitform').ajaxForm(options);
 	});
 
 });

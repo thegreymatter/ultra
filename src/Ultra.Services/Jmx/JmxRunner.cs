@@ -60,9 +60,12 @@ namespace Ultra.Services.Jmx
 			var settings = new JmxSettings {
 				Domain = loadRun.Domain, Duration = loadRun.Duration, RampUp = loadRun.RampUp
 			};
-
-			var runResults = _jmeterOutputAnalyzer.Analyze(_outputFile, settings);
-			PersistRunResults(runResults);
+			using (var reader = new StreamReader(_outputFile))
+			{
+				var runResults = _jmeterOutputAnalyzer.Analyze(_outputFile, settings);
+				PersistRunResults(runResults);
+			}
+			
 		}
 
 		// TODO: remove the onlyAnalysis parameter, and find a nicer way to do this!
@@ -79,14 +82,13 @@ namespace Ultra.Services.Jmx
 				Percentile90 = x.GetPercentileX(90),
 				RequestCount = x.GetRequestCount()
 			}).ToArray();
-
+			
 			loadRun.TotalPvs = runResults.PVS;
 			loadRun.Duration = runResults.RunningTime;
 			loadRun.StartTime = runResults.StartTime;
 			loadRun.EndTime = runResults.EndTime;
 			loadRun.Status = LoadRunStatus.Finished;
 			loadRun.RunOutputFilename = Path.GetFileName(runResults.OutputFilename);
-
 			_storage.SaveOrUpdate(loadRun);
 		}
 
