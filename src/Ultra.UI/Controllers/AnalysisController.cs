@@ -20,7 +20,7 @@ namespace Ultra.Controllers
 		private readonly IJmxRunner _jmxRunner;
 		private readonly ILoadRunRepository _loadRunRepository;
 
-		public AnalysisController(IJMeterOutputAnalyzer jMeterOutputAnalyzer, IJmxRunner jmxRunner,ILoadRunRepository loadRunRepository)
+		public AnalysisController(IJMeterOutputAnalyzer jMeterOutputAnalyzer, IJmxRunner jmxRunner, ILoadRunRepository loadRunRepository)
 		{
 			_loadRunRepository = loadRunRepository;
 			_jMeterOutputAnalyzer = jMeterOutputAnalyzer;
@@ -30,23 +30,24 @@ namespace Ultra.Controllers
 		[Route("show-analysis/{jmeterOutputFile}")]
 		public ActionResult AnalyzeResults(string jmeterOutputFile)
 		{
-			
+
 
 			var filepath = Path.Combine(JMeterOutputAnalyzer.JMeterOutputArchive, jmeterOutputFile);
 			using (var reader = new StreamReader(filepath))
 			{
-				
-				var results = _jMeterOutputAnalyzer.Analyze( filepath, new JmxSettings
-					                                                           {
-						                                                           Domain = "uat.shopyourway.com",
-						                                                           Duration = 1800,
-						                                                           RampUp = 150
-					                                                           });
+
+				var results = _jMeterOutputAnalyzer.Analyze(filepath, new JmxSettings
+																			   {
+																				   Domain = "uat.shopyourway.com",
+																				   Duration = 1800,
+																				   RampUp = 150
+																			   });
 				return View(results);
 			}
-			
+
 
 		}
+
 
 		[Route("distribution-graph/{jmeterOutputFile}")]
 		public ActionResult DistributionGraph(string jmeterOutputFile)
@@ -58,20 +59,20 @@ namespace Ultra.Controllers
 			{
 
 				var results = _jMeterOutputAnalyzer.Analyze(filepath, new JmxSettings
-					                                                      {
-						                                                      Domain = "uat.shopyourway.com",
-						                                                      Duration = 1800,
-						                                                      RampUp = 150
-					                                                      });
+																		  {
+																			  Domain = "uat.shopyourway.com",
+																			  Duration = 1800,
+																			  RampUp = 150
+																		  });
 
 
-				
+
 
 				foreach (var t in results.Threads)
 				{
-					distributions.Add(new ArrayList {t.GetThreadPoolName(), t.GetRequestCount()});
+					distributions.Add(new ArrayList { t.GetThreadPoolName(), t.GetRequestCount() });
 				}
-				
+
 			}
 			return Json(distributions);
 		}
@@ -93,11 +94,18 @@ namespace Ultra.Controllers
 		[ExceptionHandlingFilterAttribute]
 		[HttpPost]
 		[Route("-/analyze-output")]
-		public ActionResult AnalyzeOutput( HttpPostedFileBase output_file_upload, string output_domain, int output_duration, int output_rampup)
+		public ActionResult AnalyzeOutput(HttpPostedFileBase output_file_upload, string output_domain, int output_duration, int output_rampup)
 		{
 			var filepath = Path.Combine(JMeterOutputAnalyzer.JMeterOutputArchive, output_file_upload.FileName);
-			output_file_upload.SaveAs(filepath);
+			if (System.IO.File.Exists(filepath))
+			{
+				var withoutextensions = String.Format("{0}_{1}.csv", Path.GetFileNameWithoutExtension(output_file_upload.FileName),
+				                                      Path.GetRandomFileName());
 
+				filepath = Path.Combine(JMeterOutputAnalyzer.JMeterOutputArchive,withoutextensions );
+			}
+			
+				output_file_upload.SaveAs(filepath);
 			
 				var jmxSettings = new JmxSettings
 					                  {
