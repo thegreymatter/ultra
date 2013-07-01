@@ -37,6 +37,8 @@ namespace Ultra.Services.JMeterOutput
 			var maxTimeStamp = DateTime.MinValue;
 			DateTime? firstRequestTimestamp = null;
 			DateTime? timestamp = null;
+
+			_threadPoolStats.Clear();
 			OutputFileMapper = new Dictionary<string, int>();
 			using (var filestream = new StreamReader(filename))
 			{
